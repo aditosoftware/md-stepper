@@ -14,6 +14,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
 
 import org.vaadin.addons.md_stepper.AbstractStepper;
+import org.vaadin.addons.md_stepper.ListStepper;
 import org.vaadin.addons.md_stepper.HorizontalStepper;
 import org.vaadin.addons.md_stepper.StepLabel;
 import org.vaadin.addons.md_stepper.VerticalStepper;
@@ -83,6 +84,9 @@ public class StepperPropertiesLayout extends CustomComponent {
       case "Vertical":
         stepper = new VerticalStepper(Data.getSteps(), linear);
         break;
+      case "List":
+        stepper = new ListStepper(Data.getSteps(), linear);
+        break;
       default:
         throw new UnsupportedOperationException("Only \"Horizontal\" or \"Vertical\" is supported");
     }
@@ -149,6 +153,13 @@ public class StepperPropertiesLayout extends CustomComponent {
           stepper.addStyleName(VerticalStepper.Styles.STEPPER_BORDERLESS);
         }
         break;
+      case "List":
+        stepper.removeStyleName(ListStepper.Styles.STEPPER_BORDERLESS);
+
+        if (borderless) {
+          stepper.addStyleName(ListStepper.Styles.STEPPER_BORDERLESS);
+        }
+        break;
       default:
         throw new UnsupportedOperationException("Only \"Horizontal\" or \"Vertical\" is supported");
     }
@@ -180,11 +191,12 @@ public class StepperPropertiesLayout extends CustomComponent {
   }
 
   private ComboBox createStepperTypeBox() {
-    List<String> stepperTypes = Arrays.asList("Horizontal", "Vertical");
+    List<String> stepperTypes = Arrays.asList("Horizontal", "Vertical", "List");
 
     ComboBox comboBox = new ComboBox("Stepper Type *", stepperTypes);
     comboBox.setWidth(100, Unit.PERCENTAGE);
-    comboBox.setValue(comboBox.getItemIds().iterator().next());
+    //comboBox.setValue(stepperTypes.get(0));
+    comboBox.setValue(stepperTypes.get(2));
     comboBox.addValueChangeListener(event -> {
       createStepper();
       fireEvent(new StepperCreateEvent(StepperPropertiesLayout.this, stepper));
@@ -213,6 +225,7 @@ public class StepperPropertiesLayout extends CustomComponent {
   private CheckBox createLinearStepperBox() {
     CheckBox checkBox = new CheckBox("Linear Stepper *");
     checkBox.setWidth(100, Unit.PERCENTAGE);
+    checkBox.setValue(true);
     checkBox.addValueChangeListener(event -> {
       createStepper();
       fireEvent(new StepperCreateEvent(StepperPropertiesLayout.this, stepper));
