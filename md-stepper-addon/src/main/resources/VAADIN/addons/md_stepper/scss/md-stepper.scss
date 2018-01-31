@@ -111,7 +111,7 @@
   }
 
   /*------------ STEPPERS ------------*/
-  .stepper-horizontal, .stepper-vertical {
+  .stepper-horizontal, .stepper-vertical, .stepper-custom-vertical {
     @include valo-panel-style($primary-stylename: v-stepper, $background-color: $v-panel-background-color, $shadow: $shadow, $border: $border, $border-radius: $border-radius);
 
     &.borderless {
@@ -212,5 +212,29 @@
         width: calc(100% + #{($v-unit-size/3) * 2}) !important;
       }
     }
+  }
+
+  /*------------ CUSTOM VERTICAL STEPPER ------------*/
+  .stepper-custom-vertical {
+    .stepper-custom-vertical-stepsbar {
+        height: 100%;
+        @include valo-panel-caption-style($background-color: $background-color, $bevel: $bevel, $gradient: valo-gradient-style($v-gradient) valo-gradient-opacity($v-gradient)/4, $border: $border);
+        border-bottom: none;
+        border-right: valo-border($border: $border, $color: $v-background-color, $strength: 0.7);
+        border-top-left-radius: $v-border-radius;
+        border-bottom-left-radius: $v-border-radius;
+        line-height: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        padding: 0;
+
+        .step-label {
+            border-radius: 0;
+            //padding: $v-layout-margin-top * 0.4 $v-layout-margin-right * 0.25 $v-layout-margin-bottom * 0.4 $v-layout-margin-left * 0.25;
+        }
+    }
+    .step-button-container {
+        padding: round($v-layout-margin-top / 3) round($v-layout-margin-right / 3) round($v-layout-margin-bottom / 3) round($v-layout-margin-left / 3);
+     }
   }
 }
