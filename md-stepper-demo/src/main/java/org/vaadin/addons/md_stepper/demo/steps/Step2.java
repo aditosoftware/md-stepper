@@ -4,6 +4,8 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -32,8 +34,17 @@ public class Step2 extends Step {
                                           "</li>" +
                                           "</ul>", ContentMode.HTML);
 
+    TextField textField = new TextField("Enter any value");
+
     content.addComponent(stepAttributesTitle);
     content.addComponent(stepAttributesLabel);
+    content.addComponent(textField);
+    content.iterator().forEachRemaining(c -> c.setWidth(100, Unit.PERCENTAGE));
+
+    addStepCompleteListener(event -> {
+      event.getSource().getSteps().get(2).setDisabled(textField.getValue().equals(""));
+      event.getSource().refresh();
+    });
 
     setCaption("Step 2");
     setDescription("Step Attributes");

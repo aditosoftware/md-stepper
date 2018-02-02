@@ -100,6 +100,7 @@ public class LabelProvider
     stepLabel.setIcon(buildStepLabelIcon(step));
     stepLabel.setCaption(step.getCaption());
     stepLabel.setDescription(step.getDescription());
+    stepLabel.setDisabled(step.isDisabled());
     stepLabel.addLayoutClickListener(event -> {
       boolean isLeftClick = event.getButton() == MouseEventDetails.MouseButton.LEFT;
       if (isLeftClick && stepLabel.isClickable()) {
@@ -215,6 +216,7 @@ public class LabelProvider
       stepLabel.setIcon(buildStepLabelIcon(step));
       stepLabel.setCaption(step.getCaption());
       stepLabel.setDescription(step.getDescription());
+      stepLabel.setDisabled(step.isDisabled());
     });
   }
 

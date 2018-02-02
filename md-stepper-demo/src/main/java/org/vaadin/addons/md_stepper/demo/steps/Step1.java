@@ -42,5 +42,6 @@ public class Step1 extends Step {
     setCaption("Step 1");
     setDescription("Basic Stepper Features");
     setContent(content);
+    setEditable(true);
   }
 }

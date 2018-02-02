@@ -67,6 +67,7 @@ public class Step extends CustomComponent
   private boolean editable;
   private boolean cancellable;
   private boolean resetOnResubmit;
+  private boolean disabled;
 
   private Button backButton;
   private Button nextButton;
@@ -115,6 +116,7 @@ public class Step extends CustomComponent
     this.editable = false;
     this.cancellable = false;
     this.resetOnResubmit = false;
+    this.disabled = false;
 
     this.backButton = createBackButton();
     this.nextButton = createNextButton();
@@ -532,6 +534,15 @@ public class Step extends CustomComponent
   public void setOptional(boolean optional) {
     this.optional = optional;
   }
+
+  public boolean isDisabled () {
+    return disabled;
+  }
+
+  public void setDisabled(boolean pDisabled ) {
+    this.disabled = pDisabled;
+  }
+
 
   /**
    * Check whether the step will reset the submission of follow up steps in a linear stepper once it
