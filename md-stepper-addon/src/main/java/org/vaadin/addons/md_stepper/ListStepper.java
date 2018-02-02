@@ -18,8 +18,8 @@ import java.util.List;
 public class ListStepper extends AbstractStepper
         implements ElementAddListener<Step>, ElementRemoveListener<Step>, StepperCompleteListener {
 
-    private static final String STYLE_ROOT_LAYOUT = "stepper-custom-vertical";
-    private static final String STYLE_STEPSBAR = "stepper-custom-vertical-stepsbar";
+    private static final String STYLE_ROOT_LAYOUT = "stepper-list";
+    private static final String STYLE_STEPSBAR = "stepper-list-stepsbar";
 
     private HorizontalLayout rootStepperLayout;
     private VerticalLayout stepsListLayout;

@@ -115,7 +115,7 @@
   }
 
   /*------------ STEPPERS ------------*/
-  .stepper-horizontal, .stepper-vertical, .stepper-custom-vertical {
+  .stepper-horizontal, .stepper-vertical, .stepper-list {
     @include valo-panel-style($primary-stylename: v-stepper, $background-color: $v-panel-background-color, $shadow: $shadow, $border: $border, $border-radius: $border-radius);
 
     &.borderless {
@@ -143,14 +143,16 @@
   }
 
   .stepper-horizontal.label-icons-square .label-bar,
-  .stepper-vertical.label-icons-square .stepper-vertical-row {
+  .stepper-vertical.label-icons-square .stepper-vertical-row,
+  .stepper-list.label-icons-square .stepper-list-stepsbar {
     .step-label .step-icon {
       border-radius: $border-radius;
     }
   }
 
   .stepper-horizontal.label-icons-circular .label-bar,
-  .stepper-vertical.label-icons-circular .stepper-vertical-row {
+  .stepper-vertical.label-icons-circular .stepper-vertical-row,
+   .stepper-list.label-icons-circular .stepper-list-stepsbar {
     .step-label .step-icon {
       border-radius: 50%;
     }
@@ -218,9 +220,9 @@
     }
   }
 
-  /*------------ CUSTOM VERTICAL STEPPER ------------*/
-  .stepper-custom-vertical {
-    .stepper-custom-vertical-stepsbar {
+  /*------------ LIST STEPPER ------------*/
+  .stepper-list {
+    .stepper-list-stepsbar {
         height: 100%;
         @include valo-panel-caption-style($background-color: $background-color, $bevel: $bevel, $gradient: valo-gradient-style($v-gradient) valo-gradient-opacity($v-gradient)/4, $border: $border);
         border-bottom: none;
