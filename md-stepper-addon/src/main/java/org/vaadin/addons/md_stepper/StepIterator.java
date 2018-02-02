@@ -132,6 +132,9 @@ public class StepIterator extends AbstractObservableIterator<Step>
       return true;
     }
 
+    if (to.isDisabled())
+      return false;
+
     if (!steps.contains(to) || Objects.equals(current, to) || isComplete()) {
       return false;
     }
@@ -140,13 +143,12 @@ public class StepIterator extends AbstractObservableIterator<Step>
       return true;
     }
 
-    List<Step> openSteps = CircularList.from(steps, steps.indexOf(current))
-                                       .stream()
-                                       .filter(s -> currentShouldBeComplete ||
-                                                    !Objects.equals(s, current))
-                                       .filter(
-                                           s -> stateTracker.getState(s) == State.UNVISITED)
-                                       .collect(Collectors.toList());
+    List<Step> openSteps = steps
+            .stream()
+            .filter(s -> currentShouldBeComplete || !Objects.equals(s, current))
+            .filter(s -> stateTracker.getState(s) == State.UNVISITED)
+            .filter(s -> !s.isDisabled())
+            .collect(Collectors.toList());
 
     if (linear) {
       return openSteps.indexOf(to) == 0;
@@ -313,12 +315,22 @@ public class StepIterator extends AbstractObservableIterator<Step>
 
   @Override
   public int nextIndex() {
-    return CircularList.from(steps, steps.indexOf(current))
-                       .stream()
-                       .filter(this::isTransitionAllowed)
-                       .findFirst()
-                       .map(steps::indexOf)
-                       .orElse(-1);
+    if (current == null) return 0;
+
+    List<Step> stepList = steps
+            .stream()
+            .filter(s -> isTransitionAllowed(s) || Objects.equals(s, current))
+            .filter(s -> stateTracker.getState(s) == State.UNVISITED)
+            .collect(Collectors.toList());
+
+    // There are no unfinished steps.
+    if (stepList.size() == 0) return -1;
+
+    // There are previous undone steps
+    int currentStepIndex = stepList.indexOf(current);
+    if (currentStepIndex == stepList.size()-1) return 0;
+
+    return steps.indexOf(stepList.get(++currentStepIndex));
   }
 
   @Override

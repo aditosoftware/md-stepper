@@ -37,6 +37,7 @@ public class StepLabel extends CustomComponent
   public static final FontIcon DEFAULT_ICON_SKIPPED = VaadinIcons.CHECK;
   public static final FontIcon DEFAULT_ICON_EDITABLE = VaadinIcons.PENCIL;
   public static final FontIcon DEFAULT_ICON_ERROR = VaadinIcons.WARNING;
+  public static final FontIcon DEFAULT_ICON_DISABLED = VaadinIcons.CLOSE;
 
   private static final String STYLE_ROOT_LAYOUT = "step-label";
   private static final String STYLE_STEP_ICON = "step-icon";
@@ -53,6 +54,7 @@ public class StepLabel extends CustomComponent
   private FontIcon iconNexted;
   private FontIcon iconSkipped;
   private FontIcon iconEditable;
+  private FontIcon iconDisabled;
 
   private FontIcon iconError;
   private FontIcon icon;
@@ -63,6 +65,7 @@ public class StepLabel extends CustomComponent
   private boolean skipped;
   private boolean editable;
   private boolean clickable;
+  private boolean disabled;
   private Throwable error;
 
   /**
@@ -89,6 +92,7 @@ public class StepLabel extends CustomComponent
     skipped = false;
     editable = false;
     clickable = false;
+    disabled = false;
 
     iconLabel = new Label();
     iconLabel.setWidthUndefined();
@@ -132,6 +136,7 @@ public class StepLabel extends CustomComponent
     setIconSkipped(DEFAULT_ICON_SKIPPED);
     setIconEditable(DEFAULT_ICON_EDITABLE);
     setIconError(DEFAULT_ICON_ERROR);
+    setIconDisabled(DEFAULT_ICON_DISABLED);
   }
 
   /**
@@ -227,6 +232,9 @@ public class StepLabel extends CustomComponent
     if (editable) {
       iconLabel.setValue(getIconEditable().getHtml());
     }
+    if (disabled) {
+      iconLabel.setValue(getIconDisabled().getHtml());
+    }
     if (error != null) {
       iconLabel.setValue(getIconError().getHtml());
     }
@@ -259,6 +267,7 @@ public class StepLabel extends CustomComponent
     toggleStyleName(this, Styles.ACTIVE, active);
     toggleStyleName(this, Styles.EDITABLE, editable);
     toggleStyleName(this, Styles.CLICKABLE, clickable);
+    toggleStyleName(this, Styles.DISABLED, disabled);
     toggleStyleName(this, Styles.ERROR, error != null);
   }
 
@@ -320,6 +329,16 @@ public class StepLabel extends CustomComponent
   public void setIconEditable(FontIcon iconEditable) {
     Objects.requireNonNull(iconEditable, "icon may not be null");
     this.iconEditable = iconEditable;
+  }
+
+  public FontIcon getIconDisabled()
+  {
+    return iconDisabled;
+  }
+
+  public void setIconDisabled (FontIcon iconDisabled) {
+    Objects.requireNonNull(iconDisabled, "icon may not be null");
+    this.iconDisabled = iconDisabled;
   }
 
   /**
@@ -476,6 +495,14 @@ public class StepLabel extends CustomComponent
     markAsDirty();
   }
 
+  public boolean isDisabled () {
+    return disabled;
+  }
+
+  public void setDisabled (boolean pDisabled) {
+    this.disabled = pDisabled;
+  }
+
   /**
    * Set the visibility state of the caption label.
    *
@@ -508,6 +535,7 @@ public class StepLabel extends CustomComponent
     private static final String SKIPPED = "skipped";
     private static final String EDITABLE = "editable";
     private static final String CLICKABLE = "clickable";
+    private static final String DISABLED = "disabled";
     private static final String ERROR = "error";
 
     private Styles() {
