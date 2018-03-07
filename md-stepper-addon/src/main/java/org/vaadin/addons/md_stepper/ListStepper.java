@@ -252,15 +252,14 @@ public class ListStepper extends AbstractStepper
 
         private HorizontalLayout getButtonPanel () {
             HorizontalLayout buttonPanel = new HorizontalLayout();
-            buttonPanel.setWidth(100, Unit.PERCENTAGE);
             buttonPanel.addStyleName(STYLE_BUTTON_CONTAINER);
             buttonPanel.setMargin(true);
-            buttonPanel.addComponent(this.step.getNextButton());
+            buttonPanel.addComponent(this.step.getBackButton());
+            this.step.getBackButton().setEnabled(!isFirstStep(this.step) && getStepIterator().hasPrevious());
             if (step.isOptional())
                 buttonPanel.addComponent(this.step.getSkipButton());
-            Spacer.addToLayout(buttonPanel);
-            if (!isFirstStep(this.step) && getStepIterator().hasPrevious())
-                buttonPanel.addComponent(this.step.getBackButton());
+
+            buttonPanel.addComponent(this.step.getNextButton());
 
             return buttonPanel;
         }
