@@ -54,5 +54,6 @@ public class Step3 extends Step {
     setCaption("Step 3");
     setDescription("Long running Operations");
     setContent(content);
+    setEditable(true);
   }
 }

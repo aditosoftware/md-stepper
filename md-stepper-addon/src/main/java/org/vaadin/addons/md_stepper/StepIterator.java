@@ -212,6 +212,7 @@ public class StepIterator extends AbstractObservableIterator<Step>
 
   @Override
   public void moveTo(Step element) {
+
     if (!hasMoveTo(element)) {
       throw new NoSuchElementException();
     }
@@ -293,7 +294,8 @@ public class StepIterator extends AbstractObservableIterator<Step>
     }
 
     Step tmp = current;
-    current = steps.get(nextIndex());
+    if (steps.size() != 0)
+      current = steps.get(nextIndex());
 
     if (tmp == null) {
       notifyStart(new NextListener.NextEvent<>(this, null, current));

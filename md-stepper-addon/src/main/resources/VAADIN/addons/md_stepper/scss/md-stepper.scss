@@ -21,42 +21,45 @@
 
   /*------------ STEP-LABEL ------------*/
   .step-label {
-    height: $base-size + $v-layout-margin-top * 0.25 + $v-layout-margin-bottom * 0.25;
-    padding: $v-layout-margin-top * 0.25 $v-layout-margin-right * 0.25 $v-layout-margin-bottom * 0.25 $v-layout-margin-left * 0.25;
+    height: $base-size + $v-layout-margin-top * 0.35 + $v-layout-margin-bottom * 0.35;
     border-radius: $border-radius;
 
-    .step-icon {
-      width: $icon-size;
-      height: $icon-size;
-      margin-right: $v-layout-margin-right * 0.25;
-      text-align: center;
+    > .v-horizontallayout {
+        padding: $v-layout-margin-top * 0.35 $v-layout-margin-right * 0.35 $v-layout-margin-bottom * 0.35 $v-layout-margin-left * 0.35;
 
-      @if ($icon-size % 2) != 0px {
-        text-indent: 0.5px;
-      }
+        .step-icon {
+            width: $icon-size;
+            height: $icon-size;
+            margin-right: $v-layout-margin-right * 0.35;
+            text-align: center;
 
-      background: valo-font-color($background-color, .5);
-      color: valo-font-color(valo-font-color($background-color, .5), 0.9);
+            @if ($icon-size % 2) != 0px {
+                text-indent: 0.5px;
+            }
 
-      border-radius: 50%;
+            background: valo-font-color($background-color, .5);
+            color: valo-font-color(valo-font-color($background-color, .5), 0.9);
 
-      &:before {
-        content: "";
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-        width: 0;
-      }
+            border-radius: 50%;
 
-      .v-icon {
-        line-height: $icon-size;
-      }
-    }
+            &:before {
+            content: "";
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            width: 0;
+            }
 
-    .step-caption, .step-description {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
+            .v-icon {
+                line-height: $icon-size;
+            }
+        }
+
+        .step-caption, .step-description {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
     }
 
     :not(.single-label).step-caption {
@@ -110,7 +113,15 @@
     }
 
     &.disabled {
-        opacity: .4;
+        .step-caption,
+        .step-description {
+            color: rgba(valo-font-color($v-background-color), .4);
+        }
+
+        .step-icon {
+            background: rgba(valo-font-color($background-color), .4);
+            color: valo-font-color(valo-font-color($background-color, .5), 0.9);
+        }
     }
   }
 
@@ -226,7 +237,6 @@
         height: 100%;
         @include valo-panel-caption-style($background-color: $background-color, $bevel: $bevel, $gradient: valo-gradient-style($v-gradient) valo-gradient-opacity($v-gradient)/4, $border: $border);
         border-bottom: none;
-        border-right: valo-border($border: $border, $color: $v-background-color, $strength: 0.7);
         border-top-left-radius: $v-border-radius;
         border-bottom-left-radius: $v-border-radius;
         line-height: inherit;
@@ -236,7 +246,25 @@
 
         .step-label {
             border-radius: 0;
-            //padding: $v-layout-margin-top * 0.4 $v-layout-margin-right * 0.25 $v-layout-margin-bottom * 0.4 $v-layout-margin-left * 0.25;
+
+            &.active {
+                background-color: #0072C6;
+
+                .step-caption {
+                    color: white;
+                }
+                .step-description {
+                    color: white;
+                }
+
+                .step-icon {
+                    background-color: white;
+
+                    > .v-icon {
+                        color: #0072C6;
+                    }
+                }
+            }
         }
     }
     .step-button-container {

@@ -46,6 +46,8 @@ public class Step2 extends Step {
       event.getSource().refresh();
     });
 
+
+
     setCaption("Step 2");
     setDescription("Step Attributes");
     setContent(content);
