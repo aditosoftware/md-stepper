@@ -129,7 +129,8 @@ public class ListStepper extends AbstractStepper
         stepContentPanel.addStyleName(ValoTheme.PANEL_BORDERLESS);
         stepContentPanel.setHeight(100, Unit.PERCENTAGE);
 
-        rootLayout.addComponentsAndExpand(stepContentPanel);
+        rootLayout.addComponent(stepContentPanel);
+        rootLayout.setExpandRatio(stepContentPanel, 1);
         rootLayout.setExpandRatio(stepContentPanel, 1);
 
         this.rootStepperLayout = rootLayout;
@@ -231,7 +232,9 @@ public class ListStepper extends AbstractStepper
         private void buildLayout () {
             this.removeAllComponents();
             if (this.loadingIndicator == null) {
-                this.addComponentsAndExpand(this.getMainPanel());
+                Panel mainPanel = this.getMainPanel();
+                this.addComponent(mainPanel);
+                this.setExpandRatio(mainPanel, 1);
                 if (!this.hideButtons) this.addComponent(this.getButtonPanel());
             } else {
                 this.addComponent(this.getLoadingContainer(this.loadingIndicator));
