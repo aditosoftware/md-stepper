@@ -4,7 +4,7 @@
   <groupId>de.adito.aditoweb.vaadin.addons</groupId>
   <artifactId>stepper</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>5.1-SNAPSHOT</version>
   <name>Adito Stepper Add-on</name>
 
   <prerequisites>
