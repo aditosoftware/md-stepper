@@ -135,4 +135,8 @@ public interface Stepper {
    * @return The message
    */
   String getFeedbackMessage();
+
+  void lockStepper();
+
+  void unlockStepper();
 }

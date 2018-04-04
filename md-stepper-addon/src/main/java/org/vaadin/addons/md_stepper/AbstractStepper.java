@@ -50,6 +50,9 @@ public abstract class AbstractStepper extends CustomComponent
 
   private String feedbackMessage;
 
+  private boolean stepperLocked = false;
+  private Map<Step, Boolean> preLockState;
+
   /**
    * Construct a new instance of the stepper.
    *
@@ -366,6 +369,46 @@ public abstract class AbstractStepper extends CustomComponent
       Element childElement = designContext.createElement(step);
       design.appendChild(childElement);
     }
+  }
+
+  public void lockStepper () {
+    if (stepperLocked) return;
+    stepperLocked = true;
+
+    // Disable all steps except the current one
+    preLockState = new HashMap<>();
+    getSteps().stream()
+            .filter(e -> !e.equals(getCurrent()))
+            .forEach(e -> {
+              preLockState.put(e, e.isDisabled());
+              e.setDisabled(true);
+            });
+
+    // Disable the buttons of the current step
+    getCurrent().getNextButton().setEnabled(false);
+    getCurrent().getBackButton().setEnabled(false);
+    getCurrent().getCancelButton().setEnabled(false);
+    getCurrent().getSkipButton().setEnabled(false);
+
+    refresh();
+  }
+
+  public void unlockStepper () {
+    if (!stepperLocked) return;
+    stepperLocked = false;
+
+    getSteps().stream()
+            .filter(e -> !e.equals(getCurrent()))
+            .forEach(e -> e.setDisabled(preLockState.get(e)));
+    preLockState = null;
+
+    // Disable the buttons of the current step
+    getCurrent().getNextButton().setEnabled(true);
+    getCurrent().getBackButton().setEnabled(true);
+    getCurrent().getCancelButton().setEnabled(true);
+    getCurrent().getSkipButton().setEnabled(true);
+
+    refresh();
   }
 
   /**
