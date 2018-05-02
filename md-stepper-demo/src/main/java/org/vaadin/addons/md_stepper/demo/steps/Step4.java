@@ -48,5 +48,6 @@ public class Step4 extends Step {
     setCaption("Step 4");
     setDescription("Step Validation");
     setContent(content);
+    setEditable(true);
   }
 }

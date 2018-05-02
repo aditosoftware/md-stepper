@@ -45,7 +45,7 @@ public class VerticalStepper extends AbstractStepper
    *     The steps to show
    */
   public VerticalStepper(List<Step> steps) {
-    this(steps, true);
+    this(steps, true, null);
   }
 
   /**
@@ -56,8 +56,8 @@ public class VerticalStepper extends AbstractStepper
    * @param linear
    *     <code>true</code> if the state rule should be linear, <code>false</code> else
    */
-  public VerticalStepper(List<Step> steps, boolean linear) {
-    this(new StepIterator(steps, linear), StepLabel::new);
+  public VerticalStepper(List<Step> steps, boolean linear, Step startAt) {
+    this(new StepIterator(steps, linear, startAt), StepLabel::new);
   }
 
   /**
@@ -122,7 +122,7 @@ public class VerticalStepper extends AbstractStepper
    *     The factory used to create new labels for the steps
    */
   public VerticalStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory) {
-    this(steps, true, labelFactory);
+    this(steps, true, labelFactory, null);
   }
 
   /**
@@ -136,8 +136,8 @@ public class VerticalStepper extends AbstractStepper
    *     The factory used to create new labels for the steps
    */
   public VerticalStepper(List<Step> steps, boolean linear,
-                         SerializableSupplier<StepLabel> labelFactory) {
-    this(new StepIterator(steps, linear), labelFactory);
+                         SerializableSupplier<StepLabel> labelFactory, Step startAt) {
+    this(new StepIterator(steps, linear, startAt), labelFactory);
   }
 
   @Override
@@ -192,6 +192,12 @@ public class VerticalStepper extends AbstractStepper
     });
 
     super.setActive(step, previousStep, fireEvent);
+  }
+
+  @Override
+  protected void setHideButtons(boolean pHideButtons)
+  {
+
   }
 
   @Override

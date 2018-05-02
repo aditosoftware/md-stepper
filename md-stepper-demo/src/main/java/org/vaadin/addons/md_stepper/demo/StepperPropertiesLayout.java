@@ -13,18 +13,17 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
 
-import org.vaadin.addons.md_stepper.AbstractStepper;
-import org.vaadin.addons.md_stepper.ListStepper;
-import org.vaadin.addons.md_stepper.HorizontalStepper;
-import org.vaadin.addons.md_stepper.StepLabel;
-import org.vaadin.addons.md_stepper.VerticalStepper;
+import org.vaadin.addons.md_stepper.*;
 import org.vaadin.addons.md_stepper.demo.StepperPropertiesLayout.StepperCreateListener
            .StepperCreateEvent;
+import org.vaadin.addons.md_stepper.event.StepSkipListener;
 import org.vaadin.addons.md_stepper.util.SerializableSupplier;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StepperPropertiesLayout extends CustomComponent {
 
@@ -78,14 +77,15 @@ public class StepperPropertiesLayout extends CustomComponent {
     stepper = null;
     switch (stepperType) {
       case "Horizontal":
-        stepper = new HorizontalStepper(Data.getSteps(), linear);
+        stepper = new HorizontalStepper(Data.getSteps(), linear, null);
         break;
 
       case "Vertical":
-        stepper = new VerticalStepper(Data.getSteps(), linear);
+        stepper = new VerticalStepper(Data.getSteps(), linear, null);
         break;
       case "List":
-        stepper = new ListStepper(Data.getSteps(), linear);
+        List<Step> stepList = Data.getSteps();
+        stepper = new ListStepper(stepList, linear, null);
         break;
       default:
         throw new UnsupportedOperationException("Only \"Horizontal\" or \"Vertical\" is supported");
@@ -98,6 +98,13 @@ public class StepperPropertiesLayout extends CustomComponent {
                                                      Notification.Type.TRAY_NOTIFICATION);
         notification.show(Page.getCurrent());
       });
+
+      /*stepper.setCompleteErrorSupplier(() -> {
+        return stepper.getSteps().stream().collect(Collectors.toMap(
+                e -> (Step) e,
+                e -> new Exception("Test")
+        ));
+      });*/
     }
 
     updateStepperIconStyles();
@@ -107,6 +114,8 @@ public class StepperPropertiesLayout extends CustomComponent {
     dividerRatioSlider.setEnabled(stepper instanceof HorizontalStepper);
     dividerBox.setEnabled(stepper instanceof HorizontalStepper);
     stepper.start();
+
+    stepper.setReadOnly(false);
   }
 
   private void updateStepperIconStyles() {

@@ -59,7 +59,7 @@ public class HorizontalStepper extends AbstractStepper
    *     The steps to show
    */
   public HorizontalStepper(List<Step> steps) {
-    this(steps, true);
+    this(steps, true, null);
   }
 
   /**
@@ -70,8 +70,8 @@ public class HorizontalStepper extends AbstractStepper
    * @param linear
    *     <code>true</code> if the state rule should be linear, <code>false</code> else
    */
-  public HorizontalStepper(List<Step> steps, boolean linear) {
-    this(new StepIterator(steps, linear), StepLabel::new);
+  public HorizontalStepper(List<Step> steps, boolean linear, Step startAt) {
+    this(new StepIterator(steps, linear, startAt), StepLabel::new);
   }
 
   /**
@@ -194,7 +194,7 @@ public class HorizontalStepper extends AbstractStepper
    *     The factory used to create new labels for the steps
    */
   public HorizontalStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory) {
-    this(steps, true, labelFactory);
+    this(steps, true, labelFactory, null);
   }
 
   /**
@@ -208,8 +208,8 @@ public class HorizontalStepper extends AbstractStepper
    *     The factory used to create new labels for the steps
    */
   public HorizontalStepper(List<Step> steps, boolean linear,
-                           SerializableSupplier<StepLabel> labelFactory) {
-    this(new StepIterator(steps, linear), labelFactory);
+                           SerializableSupplier<StepLabel> labelFactory, Step startAt) {
+    this(new StepIterator(steps, linear, startAt), labelFactory);
   }
 
   @Override
@@ -261,6 +261,12 @@ public class HorizontalStepper extends AbstractStepper
     refreshButtonBar(step);
 
     super.setActive(step, previousStep, fireEvent);
+  }
+
+  @Override
+  protected void setHideButtons(boolean pHideButtons)
+  {
+    buttonBar.forEach(b -> b.setVisible(!pHideButtons));
   }
 
   private void refreshButtonBar(Step step) {

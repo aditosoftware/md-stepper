@@ -32,7 +32,7 @@ public class ListStepper extends AbstractStepper
      *     The steps to show
      */
     public ListStepper(List<Step> steps) {
-        this(steps, true);
+        this(steps, true, null);
     }
 
     /**
@@ -43,8 +43,8 @@ public class ListStepper extends AbstractStepper
      * @param linear
      *     <code>true</code> if the state rule should be linear, <code>false</code> else
      */
-    public ListStepper(List<Step> steps, boolean linear) {
-        this(new StepIterator(steps, linear), StepLabel::new);
+    public ListStepper(List<Step> steps, boolean linear, Step startAt) {
+        this(new StepIterator(steps, linear, startAt), StepLabel::new);
     }
 
     /**
@@ -56,7 +56,7 @@ public class ListStepper extends AbstractStepper
      *     The factory used to create new labels for the steps
      */
     public ListStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory) {
-        this(steps, true, labelFactory);
+        this(steps, true, labelFactory, null);
     }
 
     /**
@@ -69,8 +69,8 @@ public class ListStepper extends AbstractStepper
      * @param labelFactory
      *     The factory used to create new labels for the steps
      */
-    public ListStepper(List<Step> steps, boolean linear, SerializableSupplier<StepLabel> labelFactory) {
-        this(new StepIterator(steps, linear), labelFactory);
+    public ListStepper(List<Step> steps, boolean linear, SerializableSupplier<StepLabel> labelFactory, Step startAt) {
+        this(new StepIterator(steps, linear, startAt), labelFactory);
     }
 
     /**
@@ -121,6 +121,7 @@ public class ListStepper extends AbstractStepper
         stepsListLayout.setSpacing(false);
         stepsListLayout.addStyleName(STYLE_STEPSBAR);
         stepsListLayout.setWidth(20, Unit.REM);
+        stepsListLayout.setHeightUndefined();
 
         rootLayout.addComponent(stepsListLayout);
 
@@ -179,6 +180,12 @@ public class ListStepper extends AbstractStepper
         super.setActive(step, previousStep, fireEvent);
 
         this.stepsContentPanel.setContent(new StepContent(step));
+    }
+
+    @Override
+    protected void setHideButtons(boolean pHideButtons)
+    {
+        ((StepContent) this.stepsContentPanel.getContent()).setHideButtons(pHideButtons);
     }
 
     @Override

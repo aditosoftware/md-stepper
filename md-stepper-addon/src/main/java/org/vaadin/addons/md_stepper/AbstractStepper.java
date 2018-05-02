@@ -8,21 +8,17 @@ import com.vaadin.ui.declarative.DesignContext;
 
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
-import org.vaadin.addons.md_stepper.event.StepperCompleteListener;
+import org.vaadin.addons.md_stepper.event.*;
 import org.vaadin.addons.md_stepper.event.StepperCompleteListener.StepperCompleteEvent;
-import org.vaadin.addons.md_stepper.event.StepperErrorListener;
 import org.vaadin.addons.md_stepper.event.StepperErrorListener.StepperErrorEvent;
-import org.vaadin.addons.md_stepper.event.StepperFeedbackListener;
 import org.vaadin.addons.md_stepper.event.StepperFeedbackListener.StepperFeedbackEvent;
-import org.vaadin.addons.md_stepper.event.StepperNotifier;
 import org.vaadin.addons.md_stepper.iterator.ElementChangeListener;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import javax.validation.constraints.AssertFalse;
+import java.util.*;
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Abstract base class for stepper implementations.
@@ -51,6 +47,7 @@ public abstract class AbstractStepper extends CustomComponent
   private String feedbackMessage;
 
   private boolean stepperLocked = false;
+  private boolean readOnly = false;
   private Map<Step, Boolean> preLockState;
 
   /**
@@ -147,8 +144,22 @@ public abstract class AbstractStepper extends CustomComponent
 
   @Override
   public void start() {
-    stepIterator.moveTo(null);
-    stepIterator.next();
+    // Check if there is  a startAt Step
+    Step startAt = stepIterator.getStartAt();
+    if (startAt != null) {
+      if (getSteps().indexOf(startAt) != 0)
+      {
+        for (int i = 0; i < getSteps().indexOf(startAt); i++)
+        {
+          stepIterator.setStepVisited(getSteps().get(i));
+          labelProvider.setCompleted(getSteps().get(i), true);
+        }
+      }
+      stepIterator.moveTo(startAt);
+    } else {
+      stepIterator.moveTo(null);
+      stepIterator.next();
+    }
   }
 
   @Override
@@ -410,6 +421,15 @@ public abstract class AbstractStepper extends CustomComponent
 
     refresh();
   }
+
+  public void setReadOnly (boolean pReadOnly) {
+    stepIterator.setReadOnly(pReadOnly);
+    if (getCurrent() != null) {
+      setHideButtons(pReadOnly);
+    }
+  }
+
+  protected abstract void setHideButtons (boolean pHideButtons);
 
   /**
    * Styles for the stepper.
