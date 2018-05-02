@@ -5,6 +5,7 @@ package org.vaadin.addons.md_stepper.iterator;
  *
  * @see IteratorListener
  */
-public interface IteratorNotifier {
+public interface IteratorNotifier
+{
 
 }

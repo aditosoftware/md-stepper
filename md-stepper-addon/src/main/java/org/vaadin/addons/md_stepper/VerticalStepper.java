@@ -1,35 +1,21 @@
 package org.vaadin.addons.md_stepper;
 
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
-import org.vaadin.addons.md_stepper.collection.ElementAddListener;
-import org.vaadin.addons.md_stepper.collection.ElementRemoveListener;
-import org.vaadin.addons.md_stepper.component.CenteredLayout;
-import org.vaadin.addons.md_stepper.component.Spacer;
-import org.vaadin.addons.md_stepper.component.Spinner;
+import org.vaadin.addons.md_stepper.collection.*;
+import org.vaadin.addons.md_stepper.component.*;
 import org.vaadin.addons.md_stepper.event.StepperCompleteListener;
 import org.vaadin.addons.md_stepper.util.SerializableSupplier;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Stepper implementation that shows the steps in a vertical style.
  */
 public class VerticalStepper extends AbstractStepper
-    implements ElementAddListener<Step>, ElementRemoveListener<Step>, StepperCompleteListener {
+    implements ElementAddListener<Step>, ElementRemoveListener<Step>, StepperCompleteListener
+{
 
   private static final String STYLE_ROOT_LAYOUT = "stepper-vertical";
 
@@ -41,46 +27,43 @@ public class VerticalStepper extends AbstractStepper
   /**
    * Create a new linear, vertical stepper for the given steps using a {@link StepIterator}.
    *
-   * @param steps
-   *     The steps to show
+   * @param steps The steps to show
    */
-  public VerticalStepper(List<Step> steps) {
+  public VerticalStepper(List<Step> steps)
+  {
     this(steps, true, null);
   }
 
   /**
    * Create a new vertical stepper for the given steps using a {@link StepIterator}.
    *
-   * @param steps
-   *     The steps to show
-   * @param linear
-   *     <code>true</code> if the state rule should be linear, <code>false</code> else
+   * @param steps  The steps to show
+   * @param linear <code>true</code> if the state rule should be linear, <code>false</code> else
    */
-  public VerticalStepper(List<Step> steps, boolean linear, Step startAt) {
+  public VerticalStepper(List<Step> steps, boolean linear, Step startAt)
+  {
     this(new StepIterator(steps, linear, startAt), StepLabel::new);
   }
 
   /**
    * Create a new vertical stepper fusing the given iterator.
    *
-   * @param stepIterator
-   *     The iterator that handles the iteration over the given steps
-   * @param labelFactory
-   *     The label factory to build step labels
+   * @param stepIterator The iterator that handles the iteration over the given steps
+   * @param labelFactory The label factory to build step labels
    */
-  private VerticalStepper(StepIterator stepIterator, SerializableSupplier<StepLabel> labelFactory) {
+  private VerticalStepper(StepIterator stepIterator, SerializableSupplier<StepLabel> labelFactory)
+  {
     this(stepIterator, new LabelProvider(stepIterator, labelFactory));
   }
 
   /**
    * Create a new vertical stepper using the given iterator and label change handler.
    *
-   * @param stepIterator
-   *     The iterator that handles the iteration over the given steps
-   * @param labelProvider
-   *     The handler that handles changes to labels
+   * @param stepIterator  The iterator that handles the iteration over the given steps
+   * @param labelProvider The handler that handles changes to labels
    */
-  private VerticalStepper(StepIterator stepIterator, LabelProvider labelProvider) {
+  private VerticalStepper(StepIterator stepIterator, LabelProvider labelProvider)
+  {
     super(stepIterator, labelProvider);
 
     addStepperCompleteListener(this);
@@ -99,12 +82,14 @@ public class VerticalStepper extends AbstractStepper
     refreshLayout();
   }
 
-  private void refreshLayout() {
+  private void refreshLayout()
+  {
     rootLayout.removeAllComponents();
     rowMap.clear();
 
     List<Step> steps = getSteps();
-    for (Step singleStep : steps) {
+    for (Step singleStep : steps)
+    {
       RowLayout layout = new RowLayout(singleStep);
       rowMap.put(singleStep, layout);
       rootLayout.addComponent(layout);
@@ -116,75 +101,82 @@ public class VerticalStepper extends AbstractStepper
   /**
    * Create a new linear, vertical stepper for the given steps using a {@link StepIterator}.
    *
-   * @param steps
-   *     The steps to show
-   * @param labelFactory
-   *     The factory used to create new labels for the steps
+   * @param steps        The steps to show
+   * @param labelFactory The factory used to create new labels for the steps
    */
-  public VerticalStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory) {
+  public VerticalStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory)
+  {
     this(steps, true, labelFactory, null);
   }
 
   /**
    * Create a new vertical stepper for the given steps using a {@link StepIterator}.
    *
-   * @param steps
-   *     The steps to show
-   * @param linear
-   *     <code>true</code> if the state rule should be linear, <code>false</code> else
-   * @param labelFactory
-   *     The factory used to create new labels for the steps
+   * @param steps        The steps to show
+   * @param linear       <code>true</code> if the state rule should be linear, <code>false</code> else
+   * @param labelFactory The factory used to create new labels for the steps
    */
   public VerticalStepper(List<Step> steps, boolean linear,
-                         SerializableSupplier<StepLabel> labelFactory, Step startAt) {
+                         SerializableSupplier<StepLabel> labelFactory, Step startAt)
+  {
     this(new StepIterator(steps, linear, startAt), labelFactory);
   }
 
   @Override
-  public void onStepperComplete(StepperCompleteEvent event) {
+  public void onStepperComplete(StepperCompleteEvent event)
+  {
     rowMap.values().forEach(r -> r.onStepperComplete(event));
   }
 
   @Override
-  public void onElementAdd(ElementAddEvent<Step> event) {
+  public void onElementAdd(ElementAddEvent<Step> event)
+  {
     refresh();
   }
 
   @Override
-  public void refresh() {
+  public void refresh()
+  {
     super.refresh();
     refreshLayout();
     setActive(getCurrent(), getCurrent(), false);
   }
 
   @Override
-  public void showFeedbackMessage(String message) {
+  public void showFeedbackMessage(String message)
+  {
     super.showFeedbackMessage(message);
 
-    if (message == null) {
+    if (message == null)
+    {
       setActive(getCurrent(), getCurrent(), false);
     }
 
     rowMap.values()
-          .stream()
-          .filter(RowLayout::isActive)
-          .findFirst()
-          .ifPresent(layout -> layout.showTransitionMessage(message));
+        .stream()
+        .filter(RowLayout::isActive)
+        .findFirst()
+        .ifPresent(layout -> layout.showTransitionMessage(message));
   }
 
   @Override
-  protected void setActive(Step step, Step previousStep, boolean fireEvent) {
-    if (spacer != null) {
+  protected void setActive(Step step, Step previousStep, boolean fireEvent)
+  {
+    if (spacer != null)
+    {
       rootLayout.setExpandRatio(spacer, step != null ? 0 : 1);
     }
 
     rowMap.entrySet().forEach(entry -> {
       RowLayout layout = entry.getValue();
-      if (Objects.equals(entry.getKey(), step)) {
+      if (Objects.equals(entry.getKey(), step))
+      {
         layout.setActive(true);
         layout.setHeight(100, Unit.PERCENTAGE);
         rootLayout.setExpandRatio(layout, 1);
-      } else {
+      }
+      else
+      {
         layout.setActive(false);
         layout.setHeightUndefined();
         rootLayout.setExpandRatio(layout, 0);
@@ -201,26 +193,30 @@ public class VerticalStepper extends AbstractStepper
   }
 
   @Override
-  public void onElementRemove(ElementRemoveEvent<Step> event) {
+  public void onElementRemove(ElementRemoveEvent<Step> event)
+  {
     refresh();
   }
 
   /**
    * Styles for the vertical stepper.
    */
-  public static final class Styles {
+  public static final class Styles
+  {
 
     /**
      * Show the stepper in a borderless style.
      */
     public static final String STEPPER_BORDERLESS = "borderless";
 
-    private Styles() {
+    private Styles()
+    {
       // Prevent instantiation
     }
   }
 
-  private class RowLayout extends CustomComponent implements StepperCompleteListener {
+  private class RowLayout extends CustomComponent implements StepperCompleteListener
+  {
 
     private static final String STYLE_COMPONENT = "stepper-vertical-row";
     private static final String STYLE_DIVIDER = "label-divider";
@@ -238,7 +234,8 @@ public class VerticalStepper extends AbstractStepper
 
     private boolean active;
 
-    private RowLayout(Step step) {
+    private RowLayout(Step step)
+    {
       this.step = step;
 
       label = getLabelProvider().getStepLabel(step);
@@ -273,15 +270,18 @@ public class VerticalStepper extends AbstractStepper
       setActive(false);
     }
 
-    private boolean isLastStep(Step step) {
+    private boolean isLastStep(Step step)
+    {
       return getSteps().indexOf(step) == getSteps().size() - 1;
     }
 
-    public boolean isActive() {
+    public boolean isActive()
+    {
       return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(boolean active)
+    {
       this.active = active;
 
       buttonBar.setVisible(active);
@@ -292,11 +292,13 @@ public class VerticalStepper extends AbstractStepper
 
       divider.setHeight(isLastStep(step) ? 0 : -1, Unit.PIXELS);
 
-      if (!active) {
+      if (!active)
+      {
         return;
       }
 
-      if (!isLastStep(step)) {
+      if (!isLastStep(step))
+      {
         divider.setHeight(100, Unit.PERCENTAGE);
       }
       contentContainer.setContent(step.getContent());
@@ -318,19 +320,23 @@ public class VerticalStepper extends AbstractStepper
       backButton.setVisible(getStepIterator().hasPrevious());
     }
 
-    public void showTransitionMessage(String message) {
-      if (rootLayout.getComponent(1, 0) != null) {
+    public void showTransitionMessage(String message)
+    {
+      if (rootLayout.getComponent(1, 0) != null)
+      {
         rootLayout.removeComponent(1, 0);
       }
 
-      if (rootLayout.getComponent(0, 0) != null) {
+      if (rootLayout.getComponent(0, 0) != null)
+      {
         rootLayout.removeComponent(0, 0);
       }
 
       label.setCaptionVisible(message == null);
       label.setDescriptionVisible(message == null);
 
-      if (message != null) {
+      if (message != null)
+      {
         Label feedbackLabel = new Label(message);
         feedbackLabel.addStyleName(STYLE_FEEDBACK_MESSAGE);
         feedbackLabel.setWidth(100, Unit.PERCENTAGE);
@@ -340,14 +346,17 @@ public class VerticalStepper extends AbstractStepper
         rootLayout.setComponentAlignment(feedbackLabel, Alignment.MIDDLE_LEFT);
         contentContainer.setContent(new CenteredLayout(new Spinner()));
         buttonBar.forEach(c -> c.setVisible(false));
-      } else {
+      }
+      else
+      {
         rootLayout.addComponent(label, 0, 0, 1, 0);
         contentContainer.setContent(step);
       }
     }
 
     @Override
-    public void onStepperComplete(StepperCompleteEvent event) {
+    public void onStepperComplete(StepperCompleteEvent event)
+    {
       buttonBar.forEach(b -> b.setVisible(false));
     }
   }

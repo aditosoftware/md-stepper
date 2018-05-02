@@ -1,15 +1,12 @@
 package org.vaadin.addons.md_stepper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 /**
  * Allows to step through items.
  */
-public interface Stepper {
+public interface Stepper
+{
 
   /**
    * Refresh the stepper (update labels, etc.).
@@ -42,9 +39,7 @@ public interface Stepper {
   /**
    * Check if the given step is complete.
    *
-   * @param step
-   *     The step to check
-   *
+   * @param step The step to check
    * @return <code>true</code> if the step is complete, <code>false</code> else
    */
   boolean isStepComplete(Step step);
@@ -72,18 +67,15 @@ public interface Stepper {
   /**
    * Show the given error for the currently active step.
    *
-   * @param throwable
-   *     The error to show
+   * @param throwable The error to show
    */
   void showError(Throwable throwable);
 
   /**
    * Show the given error for the specified step.
    *
-   * @param step
-   *     The step to show the error for
-   * @param throwable
-   *     The error to show
+   * @param step      The step to show the error for
+   * @param throwable The error to show
    */
   void showError(Step step, Throwable throwable);
 
@@ -120,8 +112,7 @@ public interface Stepper {
   /**
    * Show the given feedback message.
    *
-   * @param message
-   *     The message to show
+   * @param message The message to show
    */
   void showFeedbackMessage(String message);
 
@@ -140,7 +131,14 @@ public interface Stepper {
    */
   String getFeedbackMessage();
 
+  /**
+   * Locks the entire stepper.
+   */
   void lockStepper();
 
+
+  /**
+   * Unlocks the stepper.
+   */
   void unlockStepper();
 }

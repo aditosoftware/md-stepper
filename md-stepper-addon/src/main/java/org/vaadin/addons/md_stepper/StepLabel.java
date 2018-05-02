@@ -1,18 +1,10 @@
 package org.vaadin.addons.md_stepper;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.server.FontIcon;
-import com.vaadin.server.Resource;
+import com.vaadin.server.*;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
 import org.vaadin.addons.md_stepper.util.StringUtils;
 
 import java.util.Objects;
@@ -30,15 +22,16 @@ import java.util.Objects;
  * </ul>
  */
 public class StepLabel extends CustomComponent
-    implements Component, LayoutEvents.LayoutClickNotifier {
+    implements Component, LayoutEvents.LayoutClickNotifier
+{
 
   public static final FontIcon DEFAULT_ICON_NEXTED = FontAwesome.CHECK;
   public static final FontIcon DEFAULT_ICON_SKIPPED = FontAwesome.CHECK;
   public static final FontIcon DEFAULT_ICON_EDITABLE = FontAwesome.PENCIL;
   public static final FontIcon DEFAULT_ICON_ERROR = FontAwesome.WARNING;
-    public static final FontIcon DEFAULT_ICON_DISABLED = FontAwesome.CLOSE;
+  public static final FontIcon DEFAULT_ICON_DISABLED = FontAwesome.CLOSE;
 
-    private static final String STYLE_ROOT_LAYOUT = "step-label";
+  private static final String STYLE_ROOT_LAYOUT = "step-label";
   private static final String STYLE_STEP_ICON = "step-icon";
   private static final String STYLE_STEP_CAPTION = "step-caption";
   private static final String STYLE_STEP_DESCRIPTION = "step-description";
@@ -70,7 +63,8 @@ public class StepLabel extends CustomComponent
   /**
    * Construct a new label.
    */
-  public StepLabel() {
+  public StepLabel()
+  {
     this(null, null, null);
   }
 
@@ -78,14 +72,12 @@ public class StepLabel extends CustomComponent
   /**
    * Construct a new label with the given caption, description and icon.
    *
-   * @param caption
-   *     The caption to show
-   * @param description
-   *     The description to show
-   * @param icon
-   *     The icon to show
+   * @param caption     The caption to show
+   * @param description The description to show
+   * @param icon        The icon to show
    */
-  public StepLabel(String caption, String description, FontIcon icon) {
+  public StepLabel(String caption, String description, FontIcon icon)
+  {
     active = false;
     nexted = false;
     skipped = false;
@@ -141,69 +133,77 @@ public class StepLabel extends CustomComponent
   /**
    * Construct a new label with the given caption.
    *
-   * @param caption
-   *     The caption to show
+   * @param caption The caption to show
    */
-  public StepLabel(String caption) {
+  public StepLabel(String caption)
+  {
     this(caption, null, null);
   }
 
   /**
    * Construct a new label with the given caption and description.
    *
-   * @param caption
-   *     The caption to show
-   * @param description
-   *     The description to show
+   * @param caption     The caption to show
+   * @param description The description to show
    */
-  public StepLabel(String caption, String description) {
+  public StepLabel(String caption, String description)
+  {
     this(caption, description, null);
   }
 
   @Override
-  public void addLayoutClickListener(LayoutEvents.LayoutClickListener listener) {
+  public void addLayoutClickListener(LayoutEvents.LayoutClickListener listener)
+  {
     Objects.requireNonNull(listener, "listener may not be null");
     rootLayout.addLayoutClickListener(listener);
   }
 
   @Override
-  public void addListener(LayoutEvents.LayoutClickListener listener) {
+  public void addListener(LayoutEvents.LayoutClickListener listener)
+  {
     Objects.requireNonNull(listener, "listener may not be null");
     rootLayout.addListener(listener);
   }
 
   @Deprecated
   @Override
-  public void removeLayoutClickListener(LayoutEvents.LayoutClickListener listener) {
+  public void removeLayoutClickListener(LayoutEvents.LayoutClickListener listener)
+  {
     Objects.requireNonNull(listener, "listener may not be null");
     rootLayout.removeLayoutClickListener(listener);
   }
 
   @Override
-  public void removeListener(LayoutEvents.LayoutClickListener listener) {
+  public void removeListener(LayoutEvents.LayoutClickListener listener)
+  {
     Objects.requireNonNull(listener, "listener may not be null");
     rootLayout.removeListener(listener);
   }
 
   @Override
-  public String getCaption() {
+  public String getCaption()
+  {
     return caption;
   }
 
   @Override
-  public void setCaption(String caption) {
+  public void setCaption(String caption)
+  {
     this.caption = caption;
     markAsDirty();
   }
 
   @Override
-  public FontIcon getIcon() {
+  public FontIcon getIcon()
+  {
     return icon;
   }
 
   @Override
-  public void setIcon(Resource icon) {
-    if (icon != null && !(icon instanceof FontIcon)) {
+  public void setIcon(Resource icon)
+  {
+    if (icon != null && !(icon instanceof FontIcon))
+    {
       throw new IllegalArgumentException("Only FontIcons are allowed");
     }
 
@@ -212,18 +212,21 @@ public class StepLabel extends CustomComponent
   }
 
   @Override
-  public String getDescription() {
+  public String getDescription()
+  {
     return description;
   }
 
   @Override
-  public void setDescription(String description) {
+  public void setDescription(String description)
+  {
     this.description = description;
     markAsDirty();
   }
 
   @Override
-  public void beforeClientResponse(boolean initial) {
+  public void beforeClientResponse(boolean initial)
+  {
     setupIcon();
     setupCaption();
     setupDescription();
@@ -232,47 +235,58 @@ public class StepLabel extends CustomComponent
     super.beforeClientResponse(initial);
   }
 
-  private void setupIcon() {
+  private void setupIcon()
+  {
     iconLabel.setValue(icon != null ? icon.getHtml() : null);
-    if (nexted) {
+    if (nexted)
+    {
       iconLabel.setValue(getIconNexted().getHtml());
     }
-    if (skipped) {
+    if (skipped)
+    {
       iconLabel.setValue(getIconSkipped().getHtml());
     }
-    if (editable) {
+    if (editable)
+    {
       iconLabel.setValue(getIconEditable().getHtml());
     }
-    if (disabled) {
+    if (disabled)
+    {
       iconLabel.setValue(getIconDisabled().getHtml());
     }
-    if (error != null) {
+    if (error != null)
+    {
       iconLabel.setValue(getIconError().getHtml());
     }
     iconLabel.setVisible(iconLabel.getValue() != null && !"".equals(iconLabel.getValue()));
   }
 
-  private void setupCaption() {
+  private void setupCaption()
+  {
     captionLabel.setValue(caption);
     captionLabel.setVisible(!StringUtils.isBlank(captionLabel.getValue()));
   }
 
-  private void setupDescription() {
+  private void setupDescription()
+  {
     descriptionLabel.setValue(description);
-    if (error != null) {
+    if (error != null)
+    {
       descriptionLabel.setValue(error.getLocalizedMessage());
     }
     descriptionLabel.setVisible(!StringUtils.isBlank(descriptionLabel.getValue()));
   }
 
-  private void setupLabelPositions() {
+  private void setupLabelPositions()
+  {
     boolean onlyCaption = captionLabel.isVisible() && !descriptionLabel.isVisible();
     boolean onlyDescription = descriptionLabel.isVisible() && !captionLabel.isVisible();
     setupSinglePosition(captionLabel, onlyCaption);
     setupSinglePosition(descriptionLabel, onlyDescription);
   }
 
-  private void setupStyles() {
+  private void setupStyles()
+  {
     toggleStyleName(this, Styles.NEXTED, nexted);
     toggleStyleName(this, Styles.SKIPPED, skipped);
     toggleStyleName(this, Styles.ACTIVE, active);
@@ -287,17 +301,18 @@ public class StepLabel extends CustomComponent
    *
    * @return The icon that is shown
    */
-  public FontIcon getIconNexted() {
+  public FontIcon getIconNexted()
+  {
     return iconNexted;
   }
 
   /**
    * Set the icon that is shown if it is <code><b>NEXTED</b></code>.
    *
-   * @param iconNexted
-   *     The icon to be shown
+   * @param iconNexted The icon to be shown
    */
-  public void setIconNexted(FontIcon iconNexted) {
+  public void setIconNexted(FontIcon iconNexted)
+  {
     Objects.requireNonNull(iconNexted, "icon may not be null");
     this.iconNexted = iconNexted;
   }
@@ -307,17 +322,18 @@ public class StepLabel extends CustomComponent
    *
    * @return The icon that is shown
    */
-  public FontIcon getIconSkipped() {
+  public FontIcon getIconSkipped()
+  {
     return iconSkipped;
   }
 
   /**
    * Set the icon that is shown if it is <code><b>SKIPPED</b></code>.
    *
-   * @param iconSkipped
-   *     The icon to be shown
+   * @param iconSkipped The icon to be shown
    */
-  public void setIconSkipped(FontIcon iconSkipped) {
+  public void setIconSkipped(FontIcon iconSkipped)
+  {
     Objects.requireNonNull(iconSkipped, "icon may not be null");
     this.iconSkipped = iconSkipped;
   }
@@ -327,17 +343,18 @@ public class StepLabel extends CustomComponent
    *
    * @return The icon that is shown
    */
-  public FontIcon getIconEditable() {
+  public FontIcon getIconEditable()
+  {
     return iconEditable;
   }
 
   /**
    * Set the icon that is shown if it is <code><b>EDITABLE</b></code>.
    *
-   * @param iconEditable
-   *     The icon to be shown
+   * @param iconEditable The icon to be shown
    */
-  public void setIconEditable(FontIcon iconEditable) {
+  public void setIconEditable(FontIcon iconEditable)
+  {
     Objects.requireNonNull(iconEditable, "icon may not be null");
     this.iconEditable = iconEditable;
   }
@@ -347,7 +364,8 @@ public class StepLabel extends CustomComponent
     return iconDisabled;
   }
 
-  public void setIconDisabled (FontIcon iconDisabled) {
+  public void setIconDisabled(FontIcon iconDisabled)
+  {
     Objects.requireNonNull(iconDisabled, "icon may not be null");
     this.iconDisabled = iconDisabled;
   }
@@ -357,31 +375,37 @@ public class StepLabel extends CustomComponent
    *
    * @return The icon that is shown
    */
-  public FontIcon getIconError() {
+  public FontIcon getIconError()
+  {
     return iconError;
   }
 
   /**
    * Set the icon that is shown if it is <code><b>ERRONEOUS</b></code>.
    *
-   * @param iconError
-   *     The icon to be shown
+   * @param iconError The icon to be shown
    */
-  public void setIconError(FontIcon iconError) {
+  public void setIconError(FontIcon iconError)
+  {
     Objects.requireNonNull(iconError, "icon may not be null");
     this.iconError = iconError;
   }
 
-  private void setupSinglePosition(Component component, boolean singlePosition) {
+  private void setupSinglePosition(Component component, boolean singlePosition)
+  {
     Alignment alignment = singlePosition ? Alignment.MIDDLE_LEFT : Alignment.TOP_LEFT;
     captionWrapper.setComponentAlignment(component, alignment);
     toggleStyleName(component, STYLE_SINGLE_LABEL, singlePosition);
   }
 
-  private void toggleStyleName(Component component, String styleName, boolean enable) {
-    if (enable) {
+  private void toggleStyleName(Component component, String styleName, boolean enable)
+  {
+    if (enable)
+    {
       component.addStyleName(styleName);
-    } else {
+    }
+    else
+    {
       component.removeStyleName(styleName);
     }
   }
@@ -391,17 +415,18 @@ public class StepLabel extends CustomComponent
    *
    * @return <code>true</code> if it is active, <code>false</code> else
    */
-  public boolean isActive() {
+  public boolean isActive()
+  {
     return active;
   }
 
   /**
    * Get the active state of the label.
    *
-   * @param active
-   *     <code>true</code> if it is be active, <code>false</code> else
+   * @param active <code>true</code> if it is be active, <code>false</code> else
    */
-  public void setActive(boolean active) {
+  public void setActive(boolean active)
+  {
     this.active = active;
     markAsDirty();
   }
@@ -411,17 +436,18 @@ public class StepLabel extends CustomComponent
    *
    * @return <code>true</code> if it is clickable, <code>false</code> else
    */
-  public boolean isClickable() {
+  public boolean isClickable()
+  {
     return clickable;
   }
 
   /**
    * Get the clickable state of the label.
    *
-   * @param clickable
-   *     <code>true</code> if it is be clickable, <code>false</code> else
+   * @param clickable <code>true</code> if it is be clickable, <code>false</code> else
    */
-  public void setClickable(boolean clickable) {
+  public void setClickable(boolean clickable)
+  {
     this.clickable = clickable;
     markAsDirty();
   }
@@ -431,17 +457,18 @@ public class StepLabel extends CustomComponent
    *
    * @return The current error
    */
-  public Throwable getError() {
+  public Throwable getError()
+  {
     return error;
   }
 
   /**
    * Set the error to show.
    *
-   * @param error
-   *     The error to show
+   * @param error The error to show
    */
-  public void setError(Throwable error) {
+  public void setError(Throwable error)
+  {
     this.error = error;
     markAsDirty();
   }
@@ -451,17 +478,18 @@ public class StepLabel extends CustomComponent
    *
    * @return <code>true</code> if it is nexted, <code>false</code> else
    */
-  public boolean isNexted() {
+  public boolean isNexted()
+  {
     return nexted;
   }
 
   /**
    * Get the nexted state of the label.
    *
-   * @param nexted
-   *     <code>true</code> if it is nexted, <code>false</code> else
+   * @param nexted <code>true</code> if it is nexted, <code>false</code> else
    */
-  public void setNexted(boolean nexted) {
+  public void setNexted(boolean nexted)
+  {
     this.nexted = nexted;
     markAsDirty();
   }
@@ -471,17 +499,18 @@ public class StepLabel extends CustomComponent
    *
    * @return <code>true</code> if it is skipped, <code>false</code> else
    */
-  public boolean isSkipped() {
+  public boolean isSkipped()
+  {
     return skipped;
   }
 
   /**
    * Get the skipped state of the label.
    *
-   * @param skipped
-   *     <code>true</code> if it is skipped, <code>false</code> else
+   * @param skipped <code>true</code> if it is skipped, <code>false</code> else
    */
-  public void setSkipped(boolean skipped) {
+  public void setSkipped(boolean skipped)
+  {
     this.skipped = skipped;
     markAsDirty();
   }
@@ -491,36 +520,39 @@ public class StepLabel extends CustomComponent
    *
    * @return <code>true</code> if it is editable, <code>false</code> else
    */
-  public boolean isEditable() {
+  public boolean isEditable()
+  {
     return editable;
   }
 
   /**
    * Get the editable state of the label.
    *
-   * @param editable
-   *     <code>true</code> if it is editable, <code>false</code> else
+   * @param editable <code>true</code> if it is editable, <code>false</code> else
    */
-  public void setEditable(boolean editable) {
+  public void setEditable(boolean editable)
+  {
     this.editable = editable;
     markAsDirty();
   }
 
-  public boolean isDisabled () {
+  public boolean isDisabled()
+  {
     return disabled;
   }
 
-  public void setDisabled (boolean pDisabled) {
+  public void setDisabled(boolean pDisabled)
+  {
     this.disabled = pDisabled;
   }
 
   /**
    * Set the visibility state of the caption label.
    *
-   * @param visible
-   *     <code>true</code> if it should be visible, <code>false</code> else
+   * @param visible <code>true</code> if it should be visible, <code>false</code> else
    */
-  public void setCaptionVisible(boolean visible) {
+  public void setCaptionVisible(boolean visible)
+  {
     captionLabel.setVisible(visible);
     markAsDirty();
   }
@@ -528,10 +560,10 @@ public class StepLabel extends CustomComponent
   /**
    * Set the visibility state of the description label.
    *
-   * @param visible
-   *     <code>true</code> if it should be visible, <code>false</code> else
+   * @param visible <code>true</code> if it should be visible, <code>false</code> else
    */
-  public void setDescriptionVisible(boolean visible) {
+  public void setDescriptionVisible(boolean visible)
+  {
     descriptionLabel.setVisible(visible);
     markAsDirty();
   }
@@ -539,7 +571,8 @@ public class StepLabel extends CustomComponent
   /**
    * The styles for a {@link StepLabel}.
    */
-  public static final class Styles {
+  public static final class Styles
+  {
 
     private static final String ACTIVE = "active";
     private static final String NEXTED = "nexted";
@@ -549,7 +582,8 @@ public class StepLabel extends CustomComponent
     private static final String DISABLED = "disabled";
     private static final String ERROR = "error";
 
-    private Styles() {
+    private Styles()
+    {
       // Prevent instantiation
     }
   }

@@ -1,14 +1,14 @@
 package org.vaadin.addons.md_stepper.component;
 
-import com.vaadin.server.FontIcon;
-import com.vaadin.server.Resource;
+import com.vaadin.server.*;
 
 import java.util.Objects;
 
 /**
  * A font icon that will show a given {@link String}.
  */
-public final class TextIcon implements FontIcon {
+public final class TextIcon implements FontIcon
+{
 
   private final String text;
 
@@ -20,32 +20,36 @@ public final class TextIcon implements FontIcon {
    * only show the first character of the text, whereas using {@link #getHtml()} will provide html
    * containing the complete text.
    *
-   * @param text
-   *     The text to show
+   * @param text The text to show
    */
-  public TextIcon(String text) {
+  public TextIcon(String text)
+  {
     Objects.requireNonNull(text, "Text may not be null");
     this.text = text;
   }
 
   @Override
-  public String getFontFamily() {
+  public String getFontFamily()
+  {
     return "inherit";
   }
 
   @Override
-  public int getCodepoint() {
+  public int getCodepoint()
+  {
     return text.codePointAt(0);
   }
 
   @Override
-  public String getHtml() {
+  public String getHtml()
+  {
     return "<span class=\"v-icon v-label-bold\">" + text + "</span>";
   }
 
   @Override
-  public String getMIMEType() {
+  public String getMIMEType()
+  {
     throw new UnsupportedOperationException(FontIcon.class.getSimpleName()
-                                            + " should not be used where a MIME type is needed.");
+                                                + " should not be used where a MIME type is needed.");
   }
 }

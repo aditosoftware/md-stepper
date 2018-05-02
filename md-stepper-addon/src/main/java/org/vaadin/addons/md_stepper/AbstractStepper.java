@@ -1,24 +1,15 @@
 package org.vaadin.addons.md_stepper;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.declarative.DesignAttributeHandler;
-import com.vaadin.ui.declarative.DesignContext;
-
-import org.jsoup.nodes.Attributes;
-import org.jsoup.nodes.Element;
+import com.vaadin.ui.*;
+import com.vaadin.ui.declarative.*;
+import org.jsoup.nodes.*;
 import org.vaadin.addons.md_stepper.event.*;
 import org.vaadin.addons.md_stepper.event.StepperCompleteListener.StepperCompleteEvent;
 import org.vaadin.addons.md_stepper.event.StepperErrorListener.StepperErrorEvent;
 import org.vaadin.addons.md_stepper.event.StepperFeedbackListener.StepperFeedbackEvent;
 import org.vaadin.addons.md_stepper.iterator.ElementChangeListener;
 
-import javax.validation.constraints.AssertFalse;
 import java.util.*;
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Abstract base class for stepper implementations.
@@ -27,7 +18,8 @@ import java.util.stream.Collectors;
  * accordingly.
  */
 public abstract class AbstractStepper extends CustomComponent
-    implements Stepper, StepperNotifier, ElementChangeListener<Step> {
+    implements Stepper, StepperNotifier, ElementChangeListener<Step>
+{
 
   private static final String DESIGN_ATTRIBUTE_LINEAR = "linear";
 
@@ -53,12 +45,11 @@ public abstract class AbstractStepper extends CustomComponent
   /**
    * Construct a new instance of the stepper.
    *
-   * @param stepIterator
-   *     The iterator that handles the iteration over the steps
-   * @param labelProvider
-   *     The handler that handles changes to labels
+   * @param stepIterator  The iterator that handles the iteration over the steps
+   * @param labelProvider The handler that handles changes to labels
    */
-  protected AbstractStepper(StepIterator stepIterator, LabelProvider labelProvider) {
+  protected AbstractStepper(StepIterator stepIterator, LabelProvider labelProvider)
+  {
     Objects.requireNonNull(stepIterator, "Step iterator may not be null");
     Objects.requireNonNull(labelProvider, "Label provider may not be null");
 
@@ -82,71 +73,84 @@ public abstract class AbstractStepper extends CustomComponent
   }
 
   @Override
-  public boolean addStepperCompleteListener(StepperCompleteListener listener) {
+  public boolean addStepperCompleteListener(StepperCompleteListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepperCompleteListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepperCompleteListener(StepperCompleteListener listener) {
+  public boolean removeStepperCompleteListener(StepperCompleteListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepperCompleteListeners.remove(listener);
   }
 
   @Override
-  public boolean addStepperErrorListener(StepperErrorListener listener) {
+  public boolean addStepperErrorListener(StepperErrorListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepperErrorListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepperErrorListener(StepperErrorListener listener) {
+  public boolean removeStepperErrorListener(StepperErrorListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepperErrorListeners.remove(listener);
   }
 
   @Override
-  public boolean addStepperFeedbackListener(StepperFeedbackListener listener) {
+  public boolean addStepperFeedbackListener(StepperFeedbackListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepperFeedbackListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepperFeedbackListener(StepperFeedbackListener listener) {
+  public boolean removeStepperFeedbackListener(StepperFeedbackListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepperFeedbackListeners.remove(listener);
   }
 
   @Override
-  public void refresh() {
+  public void refresh()
+  {
     labelProvider.refresh();
   }
 
   @Override
-  public List<Step> getSteps() {
+  public List<Step> getSteps()
+  {
     return stepIterator.getSteps();
   }
 
   @Override
-  public Step getCurrent() {
+  public Step getCurrent()
+  {
     return stepIterator.getCurrent();
   }
 
   @Override
-  public boolean isComplete() {
+  public boolean isComplete()
+  {
     return stepIterator.isComplete();
   }
 
   @Override
-  public boolean isStepComplete(Step step) {
+  public boolean isStepComplete(Step step)
+  {
     return stepIterator.isStepComplete(step);
   }
 
   @Override
-  public void start() {
+  public void start()
+  {
     // Check if there is  a startAt Step
     Step startAt = stepIterator.getStartAt();
-    if (startAt != null) {
+    if (startAt != null)
+    {
       if (getSteps().indexOf(startAt) != 0)
       {
         for (int i = 0; i < getSteps().indexOf(startAt); i++)
@@ -156,25 +160,32 @@ public abstract class AbstractStepper extends CustomComponent
         }
       }
       stepIterator.moveTo(startAt);
-    } else {
+    }
+    else
+    {
       stepIterator.moveTo(null);
       stepIterator.next();
     }
   }
 
   @Override
-  public void back() {
+  public void back()
+  {
     Objects.requireNonNull(getCurrent(), "No current step specified");
 
-    if (stepIterator.hasPrevious()) {
+    if (stepIterator.hasPrevious())
+    {
       stepIterator.previous();
-    } else {
+    }
+    else
+    {
       notifyStepperComplete();
     }
   }
 
   @Override
-  public void next() {
+  public void next()
+  {
     Step current = getCurrent();
     Objects.requireNonNull(current, "No current step specified");
 
@@ -183,28 +194,34 @@ public abstract class AbstractStepper extends CustomComponent
 
     resetStepsIfNeeded(current);
 
-    if (stepIterator.hasNext()) {
+    if (stepIterator.hasNext())
+    {
       stepIterator.next();
-    } else {
+    }
+    else
+    {
       notifyStepperComplete();
     }
   }
 
-  private void resetStepsIfNeeded(Step current) {
-    if (stepIterator.isLinear() && current.isResetOnResubmit()) {
+  private void resetStepsIfNeeded(Step current)
+  {
+    if (stepIterator.isLinear() && current.isResetOnResubmit())
+    {
       List<Step> steps = stepIterator.getSteps();
       steps.stream()
-           .skip(steps.indexOf(current) + 1)
-           .filter(stepIterator::isStepComplete)
-           .forEach(step -> {
-             labelProvider.setCompleted(step, false);
-             step.notifyReset(this);
-           });
+          .skip(steps.indexOf(current) + 1)
+          .filter(stepIterator::isStepComplete)
+          .forEach(step -> {
+            labelProvider.setCompleted(step, false);
+            step.notifyReset(this);
+          });
     }
   }
 
   @Override
-  public void skip() {
+  public void skip()
+  {
     Step current = getCurrent();
     Objects.requireNonNull(current, "No current step specified");
 
@@ -213,25 +230,33 @@ public abstract class AbstractStepper extends CustomComponent
 
     resetStepsIfNeeded(current);
 
-    if (stepIterator.hasSkip()) {
+    if (stepIterator.hasSkip())
+    {
       stepIterator.skip();
-    } else {
+    }
+    else
+    {
       notifyStepperComplete();
     }
   }
 
   @Override
-  public void showError(Throwable throwable) {
+  public void showError(Throwable throwable)
+  {
     showError(getCurrent(), throwable);
   }
 
   @Override
-  public void showError(Step step, Throwable throwable) {
+  public void showError(Step step, Throwable throwable)
+  {
     Objects.requireNonNull(step, "No current step specified");
 
-    if (throwable != null) {
+    if (throwable != null)
+    {
       errorMap.put(step, throwable);
-    } else {
+    }
+    else
+    {
       errorMap.remove(step);
     }
 
@@ -239,53 +264,63 @@ public abstract class AbstractStepper extends CustomComponent
   }
 
   @Override
-  public void hideError() {
+  public void hideError()
+  {
     hideError(getCurrent());
   }
 
   @Override
-  public void hideError(Step step) {
+  public void hideError(Step step)
+  {
     showError(step, null);
   }
 
   @Override
-  public Throwable getError() {
+  public Throwable getError()
+  {
     return getError(getCurrent());
   }
 
   @Override
-  public Throwable getError(Step step) {
+  public Throwable getError(Step step)
+  {
     return errorMap.get(step);
   }
 
   @Override
-  public void showFeedbackMessage(String message) {
+  public void showFeedbackMessage(String message)
+  {
     feedbackMessage = message;
 
     notifyStepperFeedback(message);
   }
 
   @Override
-  public void hideFeedbackMessage() {
+  public void hideFeedbackMessage()
+  {
     showFeedbackMessage(null);
   }
 
-  private void notifyStepperFeedback(String message) {
+  private void notifyStepperFeedback(String message)
+  {
     StepperFeedbackEvent feedbackEvent = new StepperFeedbackEvent(this, message);
     stepperFeedbackListeners.forEach(l -> l.onStepperFeedback(feedbackEvent));
   }
 
   @Override
-  public String getFeedbackMessage() {
+  public String getFeedbackMessage()
+  {
     return feedbackMessage;
   }
 
-  private void notifyStepperError(Step step, Throwable throwable) {
+  private void notifyStepperError(Step step, Throwable throwable)
+  {
     StepperErrorEvent errorEvent = new StepperErrorEvent(this, step, throwable);
     stepperErrorListeners.forEach(l -> l.onStepperError(errorEvent));
   }
 
-  private void notifyStepperComplete() {
+  private void notifyStepperComplete()
+  {
     StepperCompleteEvent stepperCompleteEvent = new StepperCompleteEvent(this);
     stepperCompleteListeners.forEach(l -> l.onStepperComplete(stepperCompleteEvent));
   }
@@ -295,7 +330,8 @@ public abstract class AbstractStepper extends CustomComponent
    *
    * @return the step iterator
    */
-  protected StepIterator getStepIterator() {
+  protected StepIterator getStepIterator()
+  {
     return stepIterator;
   }
 
@@ -304,56 +340,62 @@ public abstract class AbstractStepper extends CustomComponent
    *
    * @return The provider
    */
-  protected LabelProvider getLabelProvider() {
+  protected LabelProvider getLabelProvider()
+  {
     return labelProvider;
   }
 
   @Override
-  public void onElementChange(IterationEvent<Step> event) {
+  public void onElementChange(IterationEvent<Step> event)
+  {
     setActive(event.getCurrent(), event.getPrevious());
   }
 
   /**
    * Set the given step to be the active step.
    *
-   * @param step
-   *     The step to be active
+   * @param step The step to be active
    */
-  protected void setActive(Step step, Step previousStep) {
+  protected void setActive(Step step, Step previousStep)
+  {
     setActive(step, previousStep, true);
   }
 
   /**
    * Set the given step to be the active step.
    *
-   * @param step
-   *     The step to be active
-   * @param fireEvent
-   *     <code>true</code> if an event should be fired, <code>false</code> else
+   * @param step      The step to be active
+   * @param fireEvent <code>true</code> if an event should be fired, <code>false</code> else
    */
-  protected void setActive(Step step, Step previousStep, boolean fireEvent) {
-    if (step != null) {
+  protected void setActive(Step step, Step previousStep, boolean fireEvent)
+  {
+    if (step != null)
+    {
       step.getBackButton().addClickListener(onBackClicked);
       step.getNextButton().addClickListener(onNextClicked);
       step.getSkipButton().addClickListener(onSkipClicked);
       step.getCancelButton().addClickListener(onCancelClicked);
       labelProvider.setActive(step);
 
-      if (fireEvent) {
+      if (fireEvent)
+      {
         step.notifyActive(this, previousStep);
       }
     }
   }
 
   @Override
-  public void readDesign(Element design, DesignContext designContext) {
+  public void readDesign(Element design, DesignContext designContext)
+  {
     super.readDesign(design, designContext);
 
-    for (Element child : design.children()) {
+    for (Element child : design.children())
+    {
       Component childComponent = designContext.readDesign(child);
-      if (!(childComponent instanceof Step)) {
+      if (!(childComponent instanceof Step))
+      {
         throw new IllegalArgumentException("Only implementations of " + Step.class.getName() +
-                                           " are allowed as children of " + getClass().getName());
+                                               " are allowed as children of " + getClass().getName());
       }
 
       stepIterator.add(((Step) childComponent));
@@ -362,38 +404,42 @@ public abstract class AbstractStepper extends CustomComponent
     boolean linear = false;
 
     Attributes attributes = design.attributes();
-    if (attributes.hasKey(DESIGN_ATTRIBUTE_LINEAR)) {
+    if (attributes.hasKey(DESIGN_ATTRIBUTE_LINEAR))
+    {
       linear = DesignAttributeHandler.getFormatter()
-                                     .parse(design.attr(DESIGN_ATTRIBUTE_LINEAR), Boolean.class);
+          .parse(design.attr(DESIGN_ATTRIBUTE_LINEAR), Boolean.class);
     }
 
     stepIterator.setLinear(linear);
   }
 
   @Override
-  public void writeDesign(Element design, DesignContext designContext) {
+  public void writeDesign(Element design, DesignContext designContext)
+  {
     super.writeDesign(design, designContext);
     design.attr(DESIGN_ATTRIBUTE_LINEAR, stepIterator.isLinear());
 
     List<Step> steps = stepIterator.getSteps();
-    for (Step step : steps) {
+    for (Step step : steps)
+    {
       Element childElement = designContext.createElement(step);
       design.appendChild(childElement);
     }
   }
 
-  public void lockStepper () {
+  public void lockStepper()
+  {
     if (stepperLocked) return;
     stepperLocked = true;
 
     // Disable all steps except the current one
     preLockState = new HashMap<>();
     getSteps().stream()
-            .filter(e -> !e.equals(getCurrent()))
-            .forEach(e -> {
-              preLockState.put(e, e.isDisabled());
-              e.setDisabled(true);
-            });
+        .filter(e -> !e.equals(getCurrent()))
+        .forEach(e -> {
+          preLockState.put(e, e.isDisabled());
+          e.setDisabled(true);
+        });
 
     // Disable the buttons of the current step
     getCurrent().getNextButton().setEnabled(false);
@@ -404,13 +450,14 @@ public abstract class AbstractStepper extends CustomComponent
     refresh();
   }
 
-  public void unlockStepper () {
+  public void unlockStepper()
+  {
     if (!stepperLocked) return;
     stepperLocked = false;
 
     getSteps().stream()
-            .filter(e -> !e.equals(getCurrent()))
-            .forEach(e -> e.setDisabled(preLockState.get(e)));
+        .filter(e -> !e.equals(getCurrent()))
+        .forEach(e -> e.setDisabled(preLockState.get(e)));
     preLockState = null;
 
     // Disable the buttons of the current step
@@ -422,19 +469,22 @@ public abstract class AbstractStepper extends CustomComponent
     refresh();
   }
 
-  public void setReadOnly (boolean pReadOnly) {
+  public void setReadOnly(boolean pReadOnly)
+  {
     stepIterator.setReadOnly(pReadOnly);
-    if (getCurrent() != null) {
+    if (getCurrent() != null)
+    {
       setHideButtons(pReadOnly);
     }
   }
 
-  protected abstract void setHideButtons (boolean pHideButtons);
+  protected abstract void setHideButtons(boolean pHideButtons);
 
   /**
    * Styles for the stepper.
    */
-  public static final class Styles {
+  public static final class Styles
+  {
 
     /**
      * Show square icons on the labels.
@@ -445,7 +495,8 @@ public abstract class AbstractStepper extends CustomComponent
      */
     public static final String LABEL_ICONS_CIRCULAR = "label-icons-circular";
 
-    private Styles() {
+    private Styles()
+    {
       // Prevent instantiation
     }
   }

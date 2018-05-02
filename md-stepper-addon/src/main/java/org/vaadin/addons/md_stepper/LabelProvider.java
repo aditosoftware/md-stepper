@@ -2,26 +2,20 @@ package org.vaadin.addons.md_stepper;
 
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
-
-import org.vaadin.addons.md_stepper.collection.ElementAddListener;
-import org.vaadin.addons.md_stepper.collection.ElementRemoveListener;
+import org.vaadin.addons.md_stepper.collection.*;
 import org.vaadin.addons.md_stepper.component.TextIcon;
-import org.vaadin.addons.md_stepper.event.StepperCompleteListener;
-import org.vaadin.addons.md_stepper.event.StepperErrorListener;
-import org.vaadin.addons.md_stepper.event.StepperFeedbackListener;
+import org.vaadin.addons.md_stepper.event.*;
 import org.vaadin.addons.md_stepper.util.SerializableSupplier;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Provides labels for steps and handles the changes on them.
  */
 public class LabelProvider
     implements ElementAddListener<Step>, ElementRemoveListener<Step>,
-               StepperErrorListener, StepperFeedbackListener, StepperCompleteListener {
+    StepperErrorListener, StepperFeedbackListener, StepperCompleteListener
+{
 
   private final Map<Step, StepLabel> labels;
   private final StepIterator stepIterator;
@@ -30,13 +24,12 @@ public class LabelProvider
   /**
    * Create a new label provider for the given step iterator using the provided label factory.
    *
-   * @param stepIterator
-   *     The iterator used to iterate over the steps
-   * @param labelFactory
-   *     The factory to create new labels
+   * @param stepIterator The iterator used to iterate over the steps
+   * @param labelFactory The factory to create new labels
    */
   public LabelProvider(StepIterator stepIterator,
-                       SerializableSupplier<StepLabel> labelFactory) {
+                       SerializableSupplier<StepLabel> labelFactory)
+  {
     Objects.requireNonNull(stepIterator, "Step iterator may not be null");
     Objects.requireNonNull(labelFactory, "Label factory may not be null");
 
@@ -51,12 +44,11 @@ public class LabelProvider
   /**
    * Update the labels to show the given step as skipped.
    *
-   * @param step
-   *     The step to show as skipped
-   * @param skipped
-   *     <code>true</code> if the step should be shown as skipped, <code>false</code> else
+   * @param step    The step to show as skipped
+   * @param skipped <code>true</code> if the step should be shown as skipped, <code>false</code> else
    */
-  protected void setSkipped(Step step, boolean skipped) {
+  protected void setSkipped(Step step, boolean skipped)
+  {
     Objects.requireNonNull(step, "Step may not be null");
 
     StepLabel label = getStepLabel(step);
@@ -68,19 +60,20 @@ public class LabelProvider
   /**
    * Get the label for the given step.
    *
-   * @param step
-   *     The step to get the label for
-   *
+   * @param step The step to get the label for
    * @return The label for the step
    */
-  public StepLabel getStepLabel(Step step) {
+  public StepLabel getStepLabel(Step step)
+  {
     Objects.requireNonNull(step, "Step may not be null");
 
-    if (!stepIterator.getSteps().contains(step)) {
+    if (!stepIterator.getSteps().contains(step))
+    {
       throw new NoSuchElementException("No such step");
     }
 
-    if (!labels.containsKey(step)) {
+    if (!labels.containsKey(step))
+    {
       labels.put(step, buildStepLabel(step));
     }
 
@@ -90,12 +83,11 @@ public class LabelProvider
   /**
    * Build a new label for the given step.
    *
-   * @param step
-   *     The step to build the label for
-   *
+   * @param step The step to build the label for
    * @return The label for the step
    */
-  protected StepLabel buildStepLabel(Step step) {
+  protected StepLabel buildStepLabel(Step step)
+  {
     StepLabel stepLabel = labelFactory.get();
     stepLabel.setIcon(buildStepLabelIcon(step));
     stepLabel.setCaption(step.getCaption());
@@ -103,7 +95,8 @@ public class LabelProvider
     stepLabel.setDisabled(step.isDisabled());
     stepLabel.addLayoutClickListener(event -> {
       boolean isLeftClick = event.getButton() == MouseEventDetails.MouseButton.LEFT;
-      if (isLeftClick && stepLabel.isClickable()) {
+      if (isLeftClick && stepLabel.isClickable())
+      {
         stepIterator.moveTo(step);
       }
     });
@@ -113,27 +106,25 @@ public class LabelProvider
   /**
    * Build the icon for the given step.
    *
-   * @param step
-   *     The step to build the icon for
-   *
+   * @param step The step to build the icon for
    * @return The icon for the step
    */
-  protected Resource buildStepLabelIcon(Step step) {
+  protected Resource buildStepLabelIcon(Step step)
+  {
     Resource icon = step.getIcon();
     return icon != null
-               ? icon
-               : new TextIcon(String.valueOf(stepIterator.getSteps().indexOf(step) + 1));
+        ? icon
+        : new TextIcon(String.valueOf(stepIterator.getSteps().indexOf(step) + 1));
   }
 
   /**
    * Update the labels to show the given step as complete.
    *
-   * @param step
-   *     The step to show as complete
-   * @param completed
-   *     <code>true</code> if the step should be shown as complete, <code>false</code> else
+   * @param step      The step to show as complete
+   * @param completed <code>true</code> if the step should be shown as complete, <code>false</code> else
    */
-  protected void setCompleted(Step step, boolean completed) {
+  protected void setCompleted(Step step, boolean completed)
+  {
     Objects.requireNonNull(step, "Step may not be null");
 
     StepLabel label = getStepLabel(step);
@@ -143,26 +134,28 @@ public class LabelProvider
   }
 
   @Override
-  public void onStepperError(StepperErrorEvent event) {
+  public void onStepperError(StepperErrorEvent event)
+  {
     setError(event.getStep(), event.getError());
   }
 
   /**
    * Update the labels to show the given step as erroneous.
    *
-   * @param step
-   *     The step to show as erroneous
-   * @param error
-   *     The error to show
+   * @param step  The step to show as erroneous
+   * @param error The error to show
    */
-  protected void setError(Step step, Throwable error) {
+  protected void setError(Step step, Throwable error)
+  {
     Objects.requireNonNull(step, "Step may not be null");
     getStepLabel(step).setError(error);
   }
 
   @Override
-  public void onStepperFeedback(StepperFeedbackEvent event) {
-    if (event.getFeedbackMessage() != null) {
+  public void onStepperFeedback(StepperFeedbackEvent event)
+  {
+    if (event.getFeedbackMessage() != null)
+    {
       stepIterator.getSteps().forEach(step -> setClickable(step, false));
     }
   }
@@ -170,17 +163,17 @@ public class LabelProvider
   /**
    * Set the clickable state of the given steps label.
    *
-   * @param step
-   *     The step to update the label for
-   * @param clickable
-   *     The clickable state
+   * @param step      The step to update the label for
+   * @param clickable The clickable state
    */
-  protected void setClickable(Step step, boolean clickable) {
+  protected void setClickable(Step step, boolean clickable)
+  {
     getStepLabel(step).setClickable(clickable);
   }
 
   @Override
-  public void onStepperComplete(StepperCompleteEvent event) {
+  public void onStepperComplete(StepperCompleteEvent event)
+  {
     labels.values().forEach(l -> l.setEditable(false));
     setActive(null);
   }
@@ -188,28 +181,31 @@ public class LabelProvider
   /**
    * Update the labels to show the given step as active.
    *
-   * @param step
-   *     The step to show as active
+   * @param step The step to show as active
    */
-  protected void setActive(Step step) {
+  protected void setActive(Step step)
+  {
     stepIterator.getSteps().forEach(s -> {
       StepLabel stepLabel = getStepLabel(s);
       stepLabel.setActive(false);
       stepLabel.setClickable(step != null && stepIterator.hasMoveTo(s));
     });
 
-    if (step != null) {
+    if (step != null)
+    {
       getStepLabel(step).setActive(true);
     }
   }
 
   @Override
-  public void onElementRemove(ElementRemoveEvent<Step> event) {
+  public void onElementRemove(ElementRemoveEvent<Step> event)
+  {
     labels.remove(event.getElement());
     refresh();
   }
 
-  public void refresh() {
+  public void refresh()
+  {
     labels.entrySet().forEach(e -> {
       Step step = e.getKey();
       StepLabel stepLabel = e.getValue();
@@ -221,7 +217,8 @@ public class LabelProvider
   }
 
   @Override
-  public void onElementAdd(ElementAddEvent<Step> event) {
+  public void onElementAdd(ElementAddEvent<Step> event)
+  {
     refresh();
   }
 }

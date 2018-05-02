@@ -1,44 +1,28 @@
 package org.vaadin.addons.md_stepper;
 
 import com.vaadin.server.Resource;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.*;
 import com.vaadin.ui.declarative.DesignContext;
 import com.vaadin.ui.themes.ValoTheme;
-
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.vaadin.addons.md_stepper.event.StepActiveListener;
+import org.vaadin.addons.md_stepper.event.*;
 import org.vaadin.addons.md_stepper.event.StepActiveListener.StepActiveEvent;
-import org.vaadin.addons.md_stepper.event.StepBackListener;
 import org.vaadin.addons.md_stepper.event.StepBackListener.StepBackEvent;
-import org.vaadin.addons.md_stepper.event.StepCancelListener;
 import org.vaadin.addons.md_stepper.event.StepCancelListener.StepCancelEvent;
-import org.vaadin.addons.md_stepper.event.StepCompleteListener;
 import org.vaadin.addons.md_stepper.event.StepCompleteListener.StepCompleteEvent;
-import org.vaadin.addons.md_stepper.event.StepNextListener;
 import org.vaadin.addons.md_stepper.event.StepNextListener.StepNextEvent;
-import org.vaadin.addons.md_stepper.event.StepNotifier;
-import org.vaadin.addons.md_stepper.event.StepResetListener;
 import org.vaadin.addons.md_stepper.event.StepResetListener.StepResetEvent;
-import org.vaadin.addons.md_stepper.event.StepSkipListener;
 import org.vaadin.addons.md_stepper.event.StepSkipListener.StepSkipEvent;
-import org.vaadin.addons.md_stepper.event.StepperActions;
-import org.vaadin.addons.md_stepper.event.StepperListener;
 import org.vaadin.addons.md_stepper.iterator.SkippableElement;
 import org.vaadin.addons.md_stepper.state.StatefulElement;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Step extends CustomComponent
-    implements StepNotifier, StatefulElement, SkippableElement {
+    implements StepNotifier, StatefulElement, SkippableElement
+{
 
   private static final String DESIGN_ATTRIBUTE_STEP_ACTION = "step-action";
   private static final String DESIGN_TAG_CONTENT = "content";
@@ -77,7 +61,8 @@ public class Step extends CustomComponent
   /**
    * Create a new step.
    */
-  public Step() {
+  public Step()
+  {
     this(false);
   }
 
@@ -91,10 +76,10 @@ public class Step extends CustomComponent
    * {@link StepperActions#back(StepperListener.StepperEvent)}
    * if a {@link StepBackEvent} occurs</li> </ul>
    *
-   * @param defaultActions
-   *     <code>true</code> if the default actions should be added, <code>false</code> else
+   * @param defaultActions <code>true</code> if the default actions should be added, <code>false</code> else
    */
-  public Step(boolean defaultActions) {
+  public Step(boolean defaultActions)
+  {
     this.stepActiveListeners = new HashSet<>();
     this.stepCompleteListeners = new HashSet<>();
     this.stepResetListeners = new HashSet<>();
@@ -131,7 +116,8 @@ public class Step extends CustomComponent
    *
    * @return The back button
    */
-  protected Button createBackButton() {
+  protected Button createBackButton()
+  {
     return new Button("Back");
   }
 
@@ -140,7 +126,8 @@ public class Step extends CustomComponent
    *
    * @return The next button
    */
-  protected Button createNextButton() {
+  protected Button createNextButton()
+  {
     Button button = new Button("Next");
     button.addStyleName(ValoTheme.BUTTON_PRIMARY);
     return button;
@@ -151,7 +138,8 @@ public class Step extends CustomComponent
    *
    * @return The skip button
    */
-  protected Button createSkipButton() {
+  protected Button createSkipButton()
+  {
     return new Button("Skip");
   }
 
@@ -160,34 +148,32 @@ public class Step extends CustomComponent
    *
    * @return The cancel button
    */
-  protected Button createCancelButton() {
+  protected Button createCancelButton()
+  {
     return new Button("Cancel");
   }
 
   /**
    * Create a new step with the given caption and content and no default actions.
    *
-   * @param caption
-   *     The caption for the step
-   * @param content
-   *     The description for the step
+   * @param caption The caption for the step
+   * @param content The description for the step
    */
-  public Step(String caption, Component content) {
+  public Step(String caption, Component content)
+  {
     this(false, caption, content);
   }
 
   /**
    * Create a new step with the given caption and content and add default actions if wished.
    *
-   * @param defaultActions
-   *     <code>true</code> if default actions should be used for <b><code>back</code>,
-   *     <code>next</code></b> and <b><code>skip</code></b> - <code>false</code> else
-   * @param caption
-   *     The caption for the step
-   * @param content
-   *     The description for the step
+   * @param defaultActions <code>true</code> if default actions should be used for <b><code>back</code>,
+   *                       <code>next</code></b> and <b><code>skip</code></b> - <code>false</code> else
+   * @param caption        The caption for the step
+   * @param content        The description for the step
    */
-  public Step(boolean defaultActions, String caption, Component content) {
+  public Step(boolean defaultActions, String caption, Component content)
+  {
     this(defaultActions);
     setCaption(caption);
     setContent(content);
@@ -196,14 +182,12 @@ public class Step extends CustomComponent
   /**
    * Create a new step with the given caption, description and content and no default actions.
    *
-   * @param caption
-   *     The caption for the step
-   * @param description
-   *     The description for the step
-   * @param content
-   *     The description for the step
+   * @param caption     The caption for the step
+   * @param description The description for the step
+   * @param content     The description for the step
    */
-  public Step(String caption, String description, Component content) {
+  public Step(String caption, String description, Component content)
+  {
     this(false, caption, description, content);
   }
 
@@ -211,17 +195,14 @@ public class Step extends CustomComponent
    * Create a new step with the given caption, description and content and add default actions
    * if wished.
    *
-   * @param defaultActions
-   *     <code>true</code> if default actions should be used for <b><code>back</code>,
-   *     <code>next</code></b> and <b><code>skip</code></b> - <code>false</code> else
-   * @param caption
-   *     The caption for the step
-   * @param description
-   *     The description for the step
-   * @param content
-   *     The description for the step
+   * @param defaultActions <code>true</code> if default actions should be used for <b><code>back</code>,
+   *                       <code>next</code></b> and <b><code>skip</code></b> - <code>false</code> else
+   * @param caption        The caption for the step
+   * @param description    The description for the step
+   * @param content        The description for the step
    */
-  public Step(boolean defaultActions, String caption, String description, Component content) {
+  public Step(boolean defaultActions, String caption, String description, Component content)
+  {
     this(defaultActions);
     setCaption(caption);
     setDescription(description);
@@ -233,10 +214,11 @@ public class Step extends CustomComponent
    *
    * @return <code>true</code> if the default actions are used, <code>false</code> else
    */
-  public boolean isDefaultActions() {
+  public boolean isDefaultActions()
+  {
     return stepBackListeners.contains(stepperActionBack) &&
-           stepNextListeners.contains(stepperActionNext) &&
-           stepSkipListeners.contains(stepperActionSkip);
+        stepNextListeners.contains(stepperActionNext) &&
+        stepSkipListeners.contains(stepperActionSkip);
   }
 
   /**
@@ -249,15 +231,18 @@ public class Step extends CustomComponent
    * <li>skip</li>
    * </ul>
    *
-   * @param defaultActions
-   *     <code>true</code> if the default actions should be used, <code>false</code> else
+   * @param defaultActions <code>true</code> if the default actions should be used, <code>false</code> else
    */
-  public void setDefaultActions(boolean defaultActions) {
-    if (defaultActions) {
+  public void setDefaultActions(boolean defaultActions)
+  {
+    if (defaultActions)
+    {
       addStepBackListener(stepperActionBack);
       addStepNextListener(stepperActionNext);
       addStepSkipListener(stepperActionSkip);
-    } else {
+    }
+    else
+    {
       removeStepBackListener(stepperActionBack);
       removeStepNextListener(stepperActionNext);
       removeStepSkipListener(stepperActionSkip);
@@ -265,132 +250,153 @@ public class Step extends CustomComponent
   }
 
   @Override
-  public boolean addStepCompleteListener(StepCompleteListener listener) {
+  public boolean addStepCompleteListener(StepCompleteListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepCompleteListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepCompleteListener(StepCompleteListener listener) {
+  public boolean removeStepCompleteListener(StepCompleteListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepCompleteListeners.remove(listener);
   }
 
   @Override
-  public boolean addStepResetListener(StepResetListener listener) {
+  public boolean addStepResetListener(StepResetListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepResetListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepResetListener(StepResetListener listener) {
+  public boolean removeStepResetListener(StepResetListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepResetListeners.remove(listener);
   }
 
   @Override
-  public boolean addStepBackListener(StepBackListener listener) {
+  public boolean addStepBackListener(StepBackListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepBackListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepBackListener(StepBackListener listener) {
+  public boolean removeStepBackListener(StepBackListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepBackListeners.remove(listener);
   }
 
   @Override
-  public boolean addStepNextListener(StepNextListener listener) {
+  public boolean addStepNextListener(StepNextListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepNextListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepNextListener(StepNextListener listener) {
+  public boolean removeStepNextListener(StepNextListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepNextListeners.remove(listener);
   }
 
   @Override
-  public boolean addStepSkipListener(StepSkipListener listener) {
+  public boolean addStepSkipListener(StepSkipListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepSkipListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepSkipListener(StepSkipListener listener) {
+  public boolean removeStepSkipListener(StepSkipListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepSkipListeners.remove(listener);
   }
 
   @Override
-  public boolean addStepCancelListener(StepCancelListener listener) {
+  public boolean addStepCancelListener(StepCancelListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepCancelListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepCancelListener(StepCancelListener listener) {
+  public boolean removeStepCancelListener(StepCancelListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepCancelListeners.remove(listener);
   }
 
   @Override
-  public boolean addStepActiveListener(StepActiveListener listener) {
+  public boolean addStepActiveListener(StepActiveListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepActiveListeners.add(listener);
   }
 
   @Override
-  public boolean removeStepActiveListener(StepActiveListener listener) {
+  public boolean removeStepActiveListener(StepActiveListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     return stepActiveListeners.remove(listener);
   }
 
-  public void notifyActive(Stepper stepper, Step previousStep) {
+  public void notifyActive(Stepper stepper, Step previousStep)
+  {
     Objects.requireNonNull(stepper, "Stepper may not be null");
 
     StepActiveEvent activeEvent = new StepActiveEvent(stepper, this, previousStep);
     stepActiveListeners.forEach(l -> l.onStepActive(activeEvent));
   }
 
-  public void notifyComplete(Stepper stepper) {
+  public void notifyComplete(Stepper stepper)
+  {
     Objects.requireNonNull(stepper, "Stepper may not be null");
 
     StepCompleteEvent event = new StepCompleteEvent(stepper, this);
     stepCompleteListeners.forEach(l -> l.onStepComplete(event));
   }
 
-  public void notifyReset(Stepper stepper) {
+  public void notifyReset(Stepper stepper)
+  {
     Objects.requireNonNull(stepper, "Stepper may not be null");
 
     StepResetEvent event = new StepResetEvent(stepper, this);
     stepResetListeners.forEach(l -> l.onStepReset(event));
   }
 
-  public void notifyBack(Stepper stepper) {
+  public void notifyBack(Stepper stepper)
+  {
     Objects.requireNonNull(stepper, "Stepper may not be null");
 
     StepBackEvent event = new StepBackEvent(stepper, this);
     stepBackListeners.forEach(l -> l.onStepBack(event));
   }
 
-  public void notifyNext(Stepper stepper) {
+  public void notifyNext(Stepper stepper)
+  {
     Objects.requireNonNull(stepper, "Stepper may not be null");
 
     StepNextEvent event = new StepNextEvent(stepper, this);
     stepNextListeners.forEach(l -> l.onStepNext(event));
   }
 
-  public void notifySkip(Stepper stepper) {
+  public void notifySkip(Stepper stepper)
+  {
     Objects.requireNonNull(stepper, "Stepper may not be null");
 
     StepSkipEvent event = new StepSkipEvent(stepper, this);
     stepSkipListeners.forEach(l -> l.onStepSkip(event));
   }
 
-  public void notifyCancel(Stepper stepper) {
+  public void notifyCancel(Stepper stepper)
+  {
     Objects.requireNonNull(stepper, "Stepper may not be null");
 
     StepCancelEvent event = new StepCancelEvent(stepper, this);
@@ -403,12 +409,14 @@ public class Step extends CustomComponent
    * @return The caption of the step
    */
   @Override
-  public String getCaption() {
+  public String getCaption()
+  {
     return caption;
   }
 
   @Override
-  public void setCaption(String caption) {
+  public void setCaption(String caption)
+  {
     this.caption = caption;
   }
 
@@ -418,12 +426,14 @@ public class Step extends CustomComponent
    * @return The icon of the step
    */
   @Override
-  public Resource getIcon() {
+  public Resource getIcon()
+  {
     return icon;
   }
 
   @Override
-  public void setIcon(Resource icon) {
+  public void setIcon(Resource icon)
+  {
     this.icon = icon;
   }
 
@@ -433,22 +443,26 @@ public class Step extends CustomComponent
    * @return The description of the step
    */
   @Override
-  public String getDescription() {
+  public String getDescription()
+  {
     return description;
   }
 
   @Override
-  public void setDescription(String description) {
+  public void setDescription(String description)
+  {
     this.description = description;
   }
 
   @Override
-  public void readDesign(Element design, DesignContext designContext) {
+  public void readDesign(Element design, DesignContext designContext)
+  {
     new StepDesignHandler(design, designContext).readDesign();
   }
 
   @Override
-  public void writeDesign(Element design, DesignContext designContext) {
+  public void writeDesign(Element design, DesignContext designContext)
+  {
     new StepDesignHandler(design, designContext).writeDesign();
   }
 
@@ -457,11 +471,13 @@ public class Step extends CustomComponent
    *
    * @return The content of the step
    */
-  public Component getContent() {
+  public Component getContent()
+  {
     return content;
   }
 
-  public void setContent(Component content) {
+  public void setContent(Component content)
+  {
     this.content = content;
   }
 
@@ -470,11 +486,13 @@ public class Step extends CustomComponent
    *
    * @return The back button of the step
    */
-  public Button getBackButton() {
+  public Button getBackButton()
+  {
     return backButton;
   }
 
-  public void setBackButton(Button backButton) {
+  public void setBackButton(Button backButton)
+  {
     this.backButton = backButton;
   }
 
@@ -483,11 +501,13 @@ public class Step extends CustomComponent
    *
    * @return The next button of the step
    */
-  public Button getNextButton() {
+  public Button getNextButton()
+  {
     return nextButton;
   }
 
-  public void setNextButton(Button nextButton) {
+  public void setNextButton(Button nextButton)
+  {
     this.nextButton = nextButton;
   }
 
@@ -496,11 +516,13 @@ public class Step extends CustomComponent
    *
    * @return The skip button of the step
    */
-  public Button getSkipButton() {
+  public Button getSkipButton()
+  {
     return skipButton;
   }
 
-  public void setSkipButton(Button skipButton) {
+  public void setSkipButton(Button skipButton)
+  {
     this.skipButton = skipButton;
   }
 
@@ -509,37 +531,45 @@ public class Step extends CustomComponent
    *
    * @return The cancel button of the step
    */
-  public Button getCancelButton() {
+  public Button getCancelButton()
+  {
     return cancelButton;
   }
 
-  public void setCancelButton(Button cancelButton) {
+  public void setCancelButton(Button cancelButton)
+  {
     this.cancelButton = cancelButton;
   }
 
   @Override
-  public boolean isEditable() {
+  public boolean isEditable()
+  {
     return editable;
   }
 
-  public void setEditable(boolean editable) {
+  public void setEditable(boolean editable)
+  {
     this.editable = editable;
   }
 
   @Override
-  public boolean isOptional() {
+  public boolean isOptional()
+  {
     return optional;
   }
 
-  public void setOptional(boolean optional) {
+  public void setOptional(boolean optional)
+  {
     this.optional = optional;
   }
 
-  public boolean isDisabled () {
+  public boolean isDisabled()
+  {
     return disabled;
   }
 
-  public void setDisabled(boolean pDisabled ) {
+  public void setDisabled(boolean pDisabled)
+  {
     this.disabled = pDisabled;
   }
 
@@ -550,7 +580,8 @@ public class Step extends CustomComponent
    *
    * @return <code>true</code> if it resets, <code>false</code> else
    */
-  public boolean isResetOnResubmit() {
+  public boolean isResetOnResubmit()
+  {
     return resetOnResubmit;
   }
 
@@ -558,10 +589,10 @@ public class Step extends CustomComponent
    * Set whether the step will reset the submission of follow up steps in a linear stepper once it
    * is submitted.
    *
-   * @param resetOnResubmit
-   *     <code>true</code> if it resets, <code>false</code> else
+   * @param resetOnResubmit <code>true</code> if it resets, <code>false</code> else
    */
-  public void setResetOnResubmit(boolean resetOnResubmit) {
+  public void setResetOnResubmit(boolean resetOnResubmit)
+  {
     this.resetOnResubmit = resetOnResubmit;
   }
 
@@ -570,40 +601,48 @@ public class Step extends CustomComponent
    *
    * @return <code>true</code> if the step is cancellable, <code>false</code> else
    */
-  public boolean isCancellable() {
+  public boolean isCancellable()
+  {
     return cancellable;
   }
 
-  public void setCancellable(boolean cancellable) {
+  public void setCancellable(boolean cancellable)
+  {
     this.cancellable = cancellable;
   }
 
-  enum StepAction {
+  enum StepAction
+  {
     BACK, NEXT, SKIP, CANCEL;
 
-    public static boolean exists(String action) {
+    public static boolean exists(String action)
+    {
       return Arrays.stream(values()).anyMatch(a -> a.toString().equalsIgnoreCase(action));
     }
 
-    public static StepAction from(String action) {
+    public static StepAction from(String action)
+    {
       return Arrays.stream(values())
-                   .filter(a -> a.toString().equalsIgnoreCase(action))
-                   .findFirst()
-                   .orElse(null);
+          .filter(a -> a.toString().equalsIgnoreCase(action))
+          .findFirst()
+          .orElse(null);
     }
   }
 
-  private class StepDesignHandler {
+  private class StepDesignHandler
+  {
 
     private final Element design;
     private final DesignContext designContext;
 
-    private StepDesignHandler(Element design, DesignContext designContext) {
+    private StepDesignHandler(Element design, DesignContext designContext)
+    {
       this.design = design;
       this.designContext = designContext;
     }
 
-    public void readDesign() {
+    public void readDesign()
+    {
       Step.super.readDesign(design, designContext);
 
       Elements elements = design.children();
@@ -615,32 +654,39 @@ public class Step extends CustomComponent
       readStepButtons(elements);
     }
 
-    private void assertOnlyAllowedChildren(Elements elements) {
+    private void assertOnlyAllowedChildren(Elements elements)
+    {
       elements.forEach(element -> {
-        if (!ALLOWED_CHILDREN.contains(element.tagName())) {
+        if (!ALLOWED_CHILDREN.contains(element.tagName()))
+        {
           throw new IllegalArgumentException("Illegal tag found: " + element.tagName() +
-                                             ". Allowed tags: " +
-                                             ALLOWED_CHILDREN.stream()
-                                                             .collect(Collectors.joining(", ")));
+                                                 ". Allowed tags: " +
+                                                 ALLOWED_CHILDREN.stream()
+                                                     .collect(Collectors.joining(", ")));
         }
       });
     }
 
-    private void assertNoDuplicateAllowedChildren(Elements elements) {
+    private void assertNoDuplicateAllowedChildren(Elements elements)
+    {
       ALLOWED_CHILDREN.forEach(allowedTag -> {
-        if (elements.select(allowedTag).size() > 1) {
+        if (elements.select(allowedTag).size() > 1)
+        {
           throw new IllegalArgumentException("Multiple tags found for: " + allowedTag);
         }
       });
     }
 
-    private void readStepContent(Elements elements) {
+    private void readStepContent(Elements elements)
+    {
       Elements contentElements = elements.select(DESIGN_TAG_CONTENT);
-      if (!contentElements.isEmpty()) {
+      if (!contentElements.isEmpty())
+      {
         Element contentElement = contentElements.get(0);
         Elements children = contentElement.children();
 
-        if (children.size() > 1) {
+        if (children.size() > 1)
+        {
           String msg = "Only one child allowed for tag <" + DESIGN_TAG_CONTENT + ">";
           throw new IllegalArgumentException(msg);
         }
@@ -650,21 +696,26 @@ public class Step extends CustomComponent
       }
     }
 
-    private void readStepButtons(Elements elements) {
+    private void readStepButtons(Elements elements)
+    {
       Elements buttonsElements = elements.select(DESIGN_TAG_BUTTONS);
-      if (!buttonsElements.isEmpty()) {
+      if (!buttonsElements.isEmpty())
+      {
         Element buttonsElement = buttonsElements.get(0);
         Elements children = buttonsElement.children();
 
-        if (children.size() > 4) {
+        if (children.size() > 4)
+        {
           String msg = "A maximum of 4 children allowed for tag <" + DESIGN_TAG_BUTTONS + ">";
           throw new IllegalArgumentException(msg);
         }
 
         List<StepAction> stepActions = new ArrayList<>();
-        for (Element buttonElement : children) {
+        for (Element buttonElement : children)
+        {
           StepAction stepAction = readStepButton(buttonElement);
-          if (stepActions.contains(stepAction)) {
+          if (stepActions.contains(stepAction))
+          {
             throw new IllegalArgumentException("Duplicate step action found: " + stepAction);
           }
           stepActions.add(stepAction);
@@ -672,31 +723,36 @@ public class Step extends CustomComponent
       }
     }
 
-    private StepAction readStepButton(Element buttonElement) {
+    private StepAction readStepButton(Element buttonElement)
+    {
       Component component = designContext.readDesign(buttonElement);
-      if (!(component instanceof Button)) {
+      if (!(component instanceof Button))
+      {
         throw new IllegalArgumentException("Only implementations of " + Button.class.getName() +
-                                           " are allowed as children of <" + DESIGN_TAG_BUTTONS +
-                                           ">");
+                                               " are allowed as children of <" + DESIGN_TAG_BUTTONS +
+                                               ">");
       }
 
       Button button = (Button) component;
-      if (!buttonElement.hasAttr(DESIGN_ATTRIBUTE_STEP_ACTION)) {
+      if (!buttonElement.hasAttr(DESIGN_ATTRIBUTE_STEP_ACTION))
+      {
         throw new IllegalArgumentException("Please specify the step action for the button " +
-                                           "using the attribute \"" + DESIGN_ATTRIBUTE_STEP_ACTION +
-                                           "\"");
+                                               "using the attribute \"" + DESIGN_ATTRIBUTE_STEP_ACTION +
+                                               "\"");
       }
 
       String stepActionAttr = buttonElement.attr(DESIGN_ATTRIBUTE_STEP_ACTION);
-      if (!StepAction.exists(stepActionAttr)) {
+      if (!StepAction.exists(stepActionAttr))
+      {
         throw new IllegalArgumentException("Only the following step actions are allowed: " +
-                                           Arrays.stream(StepAction.values())
-                                                 .map(StepAction::toString)
-                                                 .collect(Collectors.joining(", ")));
+                                               Arrays.stream(StepAction.values())
+                                                   .map(StepAction::toString)
+                                                   .collect(Collectors.joining(", ")));
       }
 
       StepAction stepAction = StepAction.from(stepActionAttr);
-      switch (stepAction) {
+      switch (stepAction)
+      {
         case BACK:
           setBackButton(button);
           break;
@@ -714,11 +770,13 @@ public class Step extends CustomComponent
       return stepAction;
     }
 
-    public void writeDesign() {
+    public void writeDesign()
+    {
       Step.super.writeDesign(design, designContext);
       Component contentComponent = getContent();
 
-      if (contentComponent != null) {
+      if (contentComponent != null)
+      {
         Element contentElement = design.appendElement(DESIGN_TAG_CONTENT);
         contentElement.appendChild(designContext.createElement(contentComponent));
       }
@@ -730,8 +788,10 @@ public class Step extends CustomComponent
       writeButton(buttonsElement, getCancelButton(), StepAction.CANCEL);
     }
 
-    private void writeButton(Element parent, Button button, StepAction stepAction) {
-      if (button != null) {
+    private void writeButton(Element parent, Button button, StepAction stepAction)
+    {
+      if (button != null)
+      {
         Element element = designContext.createElement(button);
         element.attr(DESIGN_ATTRIBUTE_STEP_ACTION, stepAction.toString().toLowerCase());
         parent.appendChild(element);

@@ -1,6 +1,7 @@
 package org.vaadin.addons.md_stepper.collection;
 
-public interface CollectionChangeNotifier<E> {
+public interface CollectionChangeNotifier<E>
+{
 
   boolean addElementAddListener(ElementAddListener<E> listener);
 

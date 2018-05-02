@@ -3,14 +3,13 @@ package org.vaadin.addons.md_stepper.event;
 /**
  * A notifier that notifies about step evet
  */
-public interface StepNotifier {
+public interface StepNotifier
+{
 
   /**
    * Add the given listener that is triggered if a step is completed.
    *
-   * @param listener
-   *     The listener to add
-   *
+   * @param listener The listener to add
    * @return <code>true</code> if the listener was successfully added, <code>false</code> else
    */
   boolean addStepCompleteListener(StepCompleteListener listener);
@@ -18,9 +17,7 @@ public interface StepNotifier {
   /**
    * Remove the given listener.
    *
-   * @param listener
-   *     The listener to remove
-   *
+   * @param listener The listener to remove
    * @return <code>true</code> if the listener was successfully removed, <code>false</code> else
    */
   boolean removeStepCompleteListener(StepCompleteListener listener);
@@ -28,9 +25,7 @@ public interface StepNotifier {
   /**
    * Add the given listener that is triggered if a step is reseted.
    *
-   * @param listener
-   *     The listener to add
-   *
+   * @param listener The listener to add
    * @return <code>true</code> if the listener was successfully added, <code>false</code> else
    */
   boolean addStepResetListener(StepResetListener listener);
@@ -38,9 +33,7 @@ public interface StepNotifier {
   /**
    * Remove the given listener.
    *
-   * @param listener
-   *     The listener to remove
-   *
+   * @param listener The listener to remove
    * @return <code>true</code> if the listener was successfully removed, <code>false</code> else
    */
   boolean removeStepResetListener(StepResetListener listener);
@@ -48,9 +41,7 @@ public interface StepNotifier {
   /**
    * Add the given listener that is triggered if the <b>back</b> action of a step is triggered.
    *
-   * @param listener
-   *     The listener to add
-   *
+   * @param listener The listener to add
    * @return <code>true</code> if the listener was successfully added, <code>false</code> else
    */
   boolean addStepBackListener(StepBackListener listener);
@@ -58,9 +49,7 @@ public interface StepNotifier {
   /**
    * Remove the given listener.
    *
-   * @param listener
-   *     The listener to remove
-   *
+   * @param listener The listener to remove
    * @return <code>true</code> if the listener was successfully removed, <code>false</code> else
    */
   boolean removeStepBackListener(StepBackListener listener);
@@ -68,9 +57,7 @@ public interface StepNotifier {
   /**
    * Add the given listener that is triggered if the <b>next</b> action of a step is triggered.
    *
-   * @param listener
-   *     The listener to add
-   *
+   * @param listener The listener to add
    * @return <code>true</code> if the listener was successfully added, <code>false</code> else
    */
   boolean addStepNextListener(StepNextListener listener);
@@ -78,9 +65,7 @@ public interface StepNotifier {
   /**
    * Remove the given listener.
    *
-   * @param listener
-   *     The listener to remove
-   *
+   * @param listener The listener to remove
    * @return <code>true</code> if the listener was successfully removed, <code>false</code> else
    */
   boolean removeStepNextListener(StepNextListener listener);
@@ -88,9 +73,7 @@ public interface StepNotifier {
   /**
    * Add the given listener that is triggered if the <b>skip</b> action of a step is triggered.
    *
-   * @param listener
-   *     The listener to add
-   *
+   * @param listener The listener to add
    * @return <code>true</code> if the listener was successfully added, <code>false</code> else
    */
   boolean addStepSkipListener(StepSkipListener listener);
@@ -98,9 +81,7 @@ public interface StepNotifier {
   /**
    * Remove the given listener.
    *
-   * @param listener
-   *     The listener to remove
-   *
+   * @param listener The listener to remove
    * @return <code>true</code> if the listener was successfully removed, <code>false</code> else
    */
   boolean removeStepSkipListener(StepSkipListener listener);
@@ -108,9 +89,7 @@ public interface StepNotifier {
   /**
    * Add the given listener that is triggered if a step is cancelled.
    *
-   * @param listener
-   *     The listener to add
-   *
+   * @param listener The listener to add
    * @return <code>true</code> if the listener was successfully added, <code>false</code> else
    */
   boolean addStepCancelListener(StepCancelListener listener);
@@ -118,9 +97,7 @@ public interface StepNotifier {
   /**
    * Remove the given listener.
    *
-   * @param listener
-   *     The listener to remove
-   *
+   * @param listener The listener to remove
    * @return <code>true</code> if the listener was successfully removed, <code>false</code> else
    */
   boolean removeStepCancelListener(StepCancelListener listener);
@@ -128,9 +105,7 @@ public interface StepNotifier {
   /**
    * Add the given listener that is triggered if a step is activated.
    *
-   * @param listener
-   *     The listener to add
-   *
+   * @param listener The listener to add
    * @return <code>true</code> if the listener was successfully added, <code>false</code> else
    */
   boolean addStepActiveListener(StepActiveListener listener);
@@ -138,9 +113,7 @@ public interface StepNotifier {
   /**
    * Remove the given listener.
    *
-   * @param listener
-   *     The listener to remove
-   *
+   * @param listener The listener to remove
    * @return <code>true</code> if the listener was successfully removed, <code>false</code> else
    */
   boolean removeStepActiveListener(StepActiveListener listener);

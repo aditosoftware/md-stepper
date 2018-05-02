@@ -6,9 +6,9 @@ import java.util.function.Supplier;
 /**
  * Serializable supplier implementation.
  *
- * @param <T>
- *     the type of results supplied by this supplier
+ * @param <T> the type of results supplied by this supplier
  */
 @FunctionalInterface
-public interface SerializableSupplier<T> extends Supplier<T>, Serializable {
+public interface SerializableSupplier<T> extends Supplier<T>, Serializable
+{
 }

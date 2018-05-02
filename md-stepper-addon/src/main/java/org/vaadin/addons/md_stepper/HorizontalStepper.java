@@ -1,31 +1,20 @@
 package org.vaadin.addons.md_stepper;
 
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
-import org.vaadin.addons.md_stepper.collection.ElementAddListener;
-import org.vaadin.addons.md_stepper.collection.ElementRemoveListener;
-import org.vaadin.addons.md_stepper.component.CenteredLayout;
-import org.vaadin.addons.md_stepper.component.Spacer;
-import org.vaadin.addons.md_stepper.component.Spinner;
+import org.vaadin.addons.md_stepper.collection.*;
+import org.vaadin.addons.md_stepper.component.*;
 import org.vaadin.addons.md_stepper.event.StepperCompleteListener;
 import org.vaadin.addons.md_stepper.util.SerializableSupplier;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Stepper implementation that show th steps in a horizontal style.
  */
 public class HorizontalStepper extends AbstractStepper
-    implements ElementAddListener<Step>, ElementRemoveListener<Step>, StepperCompleteListener {
+    implements ElementAddListener<Step>, ElementRemoveListener<Step>, StepperCompleteListener
+{
 
   public static final float DEFAULT_EXPAND_RATIO_DIVIDER = 0.75F;
 
@@ -48,54 +37,52 @@ public class HorizontalStepper extends AbstractStepper
    * <b>ATTENTION:</b><br>
    * This constructor is used for the declarative layout!
    */
-  public HorizontalStepper() {
+  public HorizontalStepper()
+  {
     this(new ArrayList<>());
   }
 
   /**
    * Create a new linear, horizontal stepper for the given steps using a {@link StepIterator}.
    *
-   * @param steps
-   *     The steps to show
+   * @param steps The steps to show
    */
-  public HorizontalStepper(List<Step> steps) {
+  public HorizontalStepper(List<Step> steps)
+  {
     this(steps, true, null);
   }
 
   /**
    * Create a new horizontal stepper for the given steps using a {@link StepIterator}.
    *
-   * @param steps
-   *     The steps to show
-   * @param linear
-   *     <code>true</code> if the state rule should be linear, <code>false</code> else
+   * @param steps  The steps to show
+   * @param linear <code>true</code> if the state rule should be linear, <code>false</code> else
    */
-  public HorizontalStepper(List<Step> steps, boolean linear, Step startAt) {
+  public HorizontalStepper(List<Step> steps, boolean linear, Step startAt)
+  {
     this(new StepIterator(steps, linear, startAt), StepLabel::new);
   }
 
   /**
    * Create a new horizontal stepper using the given iterator.
    *
-   * @param stepIterator
-   *     The iterator that handles the iteration over the given steps
-   * @param labelFactory
-   *     The label factory used to create step labels
+   * @param stepIterator The iterator that handles the iteration over the given steps
+   * @param labelFactory The label factory used to create step labels
    */
   private HorizontalStepper(StepIterator stepIterator,
-                            SerializableSupplier<StepLabel> labelFactory) {
+                            SerializableSupplier<StepLabel> labelFactory)
+  {
     this(stepIterator, new LabelProvider(stepIterator, labelFactory));
   }
 
   /**
    * Create a new horizontal stepper using the given iterator and label change handler.
    *
-   * @param stepIterator
-   *     The iterator that handles the iteration over the given steps
-   * @param labelProvider
-   *     The handler that handles changes to labels
+   * @param stepIterator  The iterator that handles the iteration over the given steps
+   * @param labelProvider The handler that handles changes to labels
    */
-  private HorizontalStepper(StepIterator stepIterator, LabelProvider labelProvider) {
+  private HorizontalStepper(StepIterator stepIterator, LabelProvider labelProvider)
+  {
     super(stepIterator, labelProvider);
 
     addStepperCompleteListener(this);
@@ -135,13 +122,16 @@ public class HorizontalStepper extends AbstractStepper
     refreshLabelBar();
   }
 
-  private void refreshLabelBar() {
+  private void refreshLabelBar()
+  {
     labelBar.removeAllComponents();
 
     List<Step> steps = getSteps();
-    for (int i = 0; i < steps.size(); i++) {
+    for (int i = 0; i < steps.size(); i++)
+    {
       addStepLabel(steps.get(i));
-      if (i < steps.size() - 1) {
+      if (i < steps.size() - 1)
+      {
         addStepLabelDivider();
       }
     }
@@ -149,14 +139,16 @@ public class HorizontalStepper extends AbstractStepper
     labelBar.iterator().forEachRemaining(c -> c.setWidth(100, Unit.PERCENTAGE));
   }
 
-  private void addStepLabel(Step step) {
+  private void addStepLabel(Step step)
+  {
     Component stepLabel = getLabelProvider().getStepLabel(step);
 
     labelBar.addComponent(stepLabel);
     labelBar.setExpandRatio(stepLabel, 1);
   }
 
-  private void addStepLabelDivider() {
+  private void addStepLabelDivider()
+  {
     CssLayout divider = new CssLayout();
     divider.addStyleName(STYLE_DIVIDER);
 
@@ -169,7 +161,8 @@ public class HorizontalStepper extends AbstractStepper
    *
    * @return The expand ratio
    */
-  public float getDividerExpandRatio() {
+  public float getDividerExpandRatio()
+  {
     return dividerExpandRatio;
   }
 
@@ -177,10 +170,10 @@ public class HorizontalStepper extends AbstractStepper
    * Set the expand ratio of the dividers between the labels (labels have an expand ratio of
    * <code><b>1</b></code>).
    *
-   * @param dividerExpandRatio
-   *     The expand ratio for the dividers
+   * @param dividerExpandRatio The expand ratio for the dividers
    */
-  public void setDividerExpandRatio(float dividerExpandRatio) {
+  public void setDividerExpandRatio(float dividerExpandRatio)
+  {
     this.dividerExpandRatio = dividerExpandRatio;
     refreshLabelBar();
   }
@@ -188,62 +181,67 @@ public class HorizontalStepper extends AbstractStepper
   /**
    * Create a new linear, horizontal stepper for the given steps using a {@link StepIterator}.
    *
-   * @param steps
-   *     The steps to show
-   * @param labelFactory
-   *     The factory used to create new labels for the steps
+   * @param steps        The steps to show
+   * @param labelFactory The factory used to create new labels for the steps
    */
-  public HorizontalStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory) {
+  public HorizontalStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory)
+  {
     this(steps, true, labelFactory, null);
   }
 
   /**
    * Create a new horizontal stepper for the given steps using a {@link StepIterator}.
    *
-   * @param steps
-   *     The steps to show
-   * @param linear
-   *     <code>true</code> if the state rule should be linear, <code>false</code> else
-   * @param labelFactory
-   *     The factory used to create new labels for the steps
+   * @param steps        The steps to show
+   * @param linear       <code>true</code> if the state rule should be linear, <code>false</code> else
+   * @param labelFactory The factory used to create new labels for the steps
    */
   public HorizontalStepper(List<Step> steps, boolean linear,
-                           SerializableSupplier<StepLabel> labelFactory, Step startAt) {
+                           SerializableSupplier<StepLabel> labelFactory, Step startAt)
+  {
     this(new StepIterator(steps, linear, startAt), labelFactory);
   }
 
   @Override
-  public void onStepperComplete(StepperCompleteEvent event) {
+  public void onStepperComplete(StepperCompleteEvent event)
+  {
     buttonBar.forEach(b -> b.setVisible(false));
   }
 
   @Override
-  public void onElementAdd(ElementAddEvent<Step> event) {
+  public void onElementAdd(ElementAddEvent<Step> event)
+  {
     refresh();
   }
 
   @Override
-  public void refresh() {
+  public void refresh()
+  {
     super.refresh();
     refreshLabelBar();
     setActive(getCurrent(), getCurrent(), false);
   }
 
   @Override
-  public void showFeedbackMessage(String message) {
+  public void showFeedbackMessage(String message)
+  {
     super.showFeedbackMessage(message);
 
-    if (message == null) {
+    if (message == null)
+    {
       refreshLabelBar();
       setActive(getCurrent(), getCurrent(), false);
-    } else {
+    }
+    else
+    {
       buttonBar.forEach(button -> button.setVisible(false));
       showTransitionLabel(message);
       showSpinner();
     }
   }
 
-  private void showTransitionLabel(String message) {
+  private void showTransitionLabel(String message)
+  {
     Label feedbackLabel = new Label(message);
     feedbackLabel.addStyleName(STYLE_FEEDBACK_MESSAGE);
 
@@ -251,12 +249,14 @@ public class HorizontalStepper extends AbstractStepper
     labelBar.addComponent(feedbackLabel);
   }
 
-  private void showSpinner() {
+  private void showSpinner()
+  {
     stepContent.setContent(new CenteredLayout(new Spinner()));
   }
 
   @Override
-  protected void setActive(Step step, Step previousStep, boolean fireEvent) {
+  protected void setActive(Step step, Step previousStep, boolean fireEvent)
+  {
     stepContent.setContent(step.getContent());
     refreshButtonBar(step);
 
@@ -269,11 +269,13 @@ public class HorizontalStepper extends AbstractStepper
     buttonBar.forEach(b -> b.setVisible(!pHideButtons));
   }
 
-  private void refreshButtonBar(Step step) {
+  private void refreshButtonBar(Step step)
+  {
     buttonBar.removeAllComponents();
     buttonBar.setVisible(true);
 
-    if (step == null) {
+    if (step == null)
+    {
       return;
     }
 
@@ -295,14 +297,16 @@ public class HorizontalStepper extends AbstractStepper
   }
 
   @Override
-  public void onElementRemove(ElementRemoveEvent<Step> event) {
+  public void onElementRemove(ElementRemoveEvent<Step> event)
+  {
     refresh();
   }
 
   /**
    * Styles for the horizontal stepper.
    */
-  public static final class Styles {
+  public static final class Styles
+  {
 
     /**
      * Show the stepper in a borderless style.
@@ -313,7 +317,8 @@ public class HorizontalStepper extends AbstractStepper
      */
     public static final String STEPPER_NO_DIVIDER = "no-divider";
 
-    private Styles() {
+    private Styles()
+    {
       // Prevent instantiation
     }
   }

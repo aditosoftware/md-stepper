@@ -1,24 +1,16 @@
 package org.vaadin.addons.md_stepper;
 
 import com.vaadin.server.Resource;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
+import com.vaadin.ui.*;
+import org.vaadin.addons.md_stepper.event.*;
 
-import org.vaadin.addons.md_stepper.event.StepActiveListener;
-import org.vaadin.addons.md_stepper.event.StepBackListener;
-import org.vaadin.addons.md_stepper.event.StepCancelListener;
-import org.vaadin.addons.md_stepper.event.StepCompleteListener;
-import org.vaadin.addons.md_stepper.event.StepNextListener;
-import org.vaadin.addons.md_stepper.event.StepSkipListener;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Builder that conveniently allows to build steps.
  */
-public final class StepBuilder {
+public final class StepBuilder
+{
 
   private final Collection<StepActiveListener> stepActiveListeners;
   private final Collection<StepCompleteListener> stepCompleteListeners;
@@ -43,7 +35,8 @@ public final class StepBuilder {
   private Button skipButton;
   private Button cancelButton;
 
-  public StepBuilder() {
+  public StepBuilder()
+  {
     this.stepActiveListeners = new HashSet<>();
     this.stepCompleteListeners = new HashSet<>();
     this.stepBackListeners = new HashSet<>();
@@ -52,108 +45,128 @@ public final class StepBuilder {
     this.stepCancelListeners = new HashSet<>();
   }
 
-  public StepBuilder withCaption(String caption) {
+  public StepBuilder withCaption(String caption)
+  {
     this.caption = caption;
     return this;
   }
 
-  public StepBuilder withDescription(String description) {
+  public StepBuilder withDescription(String description)
+  {
     this.description = description;
     return this;
   }
 
-  public StepBuilder withContent(Component content) {
+  public StepBuilder withContent(Component content)
+  {
     this.content = content;
     return this;
   }
 
-  public StepBuilder withIcon(Resource icon) {
+  public StepBuilder withIcon(Resource icon)
+  {
     this.icon = icon;
     return this;
   }
 
-  public StepBuilder withOptional(boolean optional) {
+  public StepBuilder withOptional(boolean optional)
+  {
     this.optional = optional;
     return this;
   }
 
-  public StepBuilder withEditable(boolean editable) {
+  public StepBuilder withEditable(boolean editable)
+  {
     this.editable = editable;
     return this;
   }
 
-  public StepBuilder withResetOnResubmit(boolean resetOnResubmit) {
+  public StepBuilder withResetOnResubmit(boolean resetOnResubmit)
+  {
     this.resetOnResubmit = resetOnResubmit;
     return this;
   }
 
-  public StepBuilder withCancellable(boolean cancellable) {
+  public StepBuilder withCancellable(boolean cancellable)
+  {
     this.cancellable = cancellable;
     return this;
   }
 
-  public StepBuilder withBackButton(Button backButton) {
+  public StepBuilder withBackButton(Button backButton)
+  {
     this.backButton = backButton;
     return this;
   }
 
-  public StepBuilder withNextButton(Button nextButton) {
+  public StepBuilder withNextButton(Button nextButton)
+  {
     this.nextButton = nextButton;
     return this;
   }
 
-  public StepBuilder withSkipButton(Button skipButton) {
+  public StepBuilder withSkipButton(Button skipButton)
+  {
     this.skipButton = skipButton;
     return this;
   }
 
-  public StepBuilder withCancelButton(Button cancelButton) {
+  public StepBuilder withCancelButton(Button cancelButton)
+  {
     this.cancelButton = cancelButton;
     return this;
   }
 
-  public StepBuilder withDefaultActions(boolean defaultActions) {
+  public StepBuilder withDefaultActions(boolean defaultActions)
+  {
     this.defaultActions = defaultActions;
     return this;
   }
 
-  public StepBuilder withStepCompleteListener(StepCompleteListener listener) {
+  public StepBuilder withStepCompleteListener(StepCompleteListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     stepCompleteListeners.add(listener);
     return this;
   }
 
-  public StepBuilder withStepBackListener(StepBackListener listener) {
+  public StepBuilder withStepBackListener(StepBackListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     stepBackListeners.add(listener);
     return this;
   }
 
-  public StepBuilder withStepNextListener(StepNextListener listener) {
+  public StepBuilder withStepNextListener(StepNextListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     stepNextListeners.add(listener);
     return this;
   }
 
-  public StepBuilder withStepSkipListener(StepSkipListener listener) {
+  public StepBuilder withStepSkipListener(StepSkipListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     stepSkipListeners.add(listener);
     return this;
   }
 
-  public StepBuilder withStepCancelListener(StepCancelListener listener) {
+  public StepBuilder withStepCancelListener(StepCancelListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     stepCancelListeners.add(listener);
     return this;
   }
 
-  public StepBuilder withStepActiveListener(StepActiveListener listener) {
+  public StepBuilder withStepActiveListener(StepActiveListener listener)
+  {
     Objects.requireNonNull(listener, "Listener may not be null");
     stepActiveListeners.add(listener);
     return this;
   }
 
-  public Step build() {
+  public Step build()
+  {
     Step step = new Step();
 
     step.setCaption(caption);

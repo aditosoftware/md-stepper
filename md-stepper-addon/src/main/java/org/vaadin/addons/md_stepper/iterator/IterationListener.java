@@ -5,15 +5,16 @@ import java.util.Iterator;
 /**
  * Basic listener for listening to iteration events.
  */
-public interface IterationListener extends IteratorListener {
+public interface IterationListener extends IteratorListener
+{
 
   /**
    * Basic class for iteration events.
    *
-   * @param <E>
-   *     The type of the iterated elements
+   * @param <E> The type of the iterated elements
    */
-  class IterationEvent<E> extends IteratorEvent<E> {
+  class IterationEvent<E> extends IteratorEvent<E>
+  {
 
     private final transient E previous;
     private final transient E current;
@@ -21,14 +22,12 @@ public interface IterationListener extends IteratorListener {
     /**
      * Construct a new iteration event.
      *
-     * @param source
-     *     The iterator that causes the event
-     * @param previous
-     *     The current element <b>before</b> the iteration
-     * @param current
-     *     The current element <b>after</b> the iteration
+     * @param source   The iterator that causes the event
+     * @param previous The current element <b>before</b> the iteration
+     * @param current  The current element <b>after</b> the iteration
      */
-    public IterationEvent(Iterator<E> source, E previous, E current) {
+    public IterationEvent(Iterator<E> source, E previous, E current)
+    {
       super(source);
       this.previous = previous;
       this.current = current;
@@ -39,7 +38,8 @@ public interface IterationListener extends IteratorListener {
      *
      * @return The element
      */
-    public E getPrevious() {
+    public E getPrevious()
+    {
       return previous;
     }
 
@@ -48,7 +48,8 @@ public interface IterationListener extends IteratorListener {
      *
      * @return The element
      */
-    public E getCurrent() {
+    public E getCurrent()
+    {
       return current;
     }
   }

@@ -1,6 +1,7 @@
 package org.vaadin.addons.md_stepper.state;
 
-public interface StatefulElement {
+public interface StatefulElement
+{
 
   /**
    * Get the editable state of the element.
