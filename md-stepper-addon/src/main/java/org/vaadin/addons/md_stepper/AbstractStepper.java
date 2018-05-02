@@ -39,7 +39,6 @@ public abstract class AbstractStepper extends CustomComponent
   private String feedbackMessage;
 
   private boolean stepperLocked = false;
-  private boolean readOnly = false;
   private Map<Step, Boolean> preLockState;
 
   /**
@@ -467,15 +466,6 @@ public abstract class AbstractStepper extends CustomComponent
     getCurrent().getSkipButton().setEnabled(true);
 
     refresh();
-  }
-
-  public void setReadOnly(boolean pReadOnly)
-  {
-    stepIterator.setReadOnly(pReadOnly);
-    if (getCurrent() != null)
-    {
-      setHideButtons(pReadOnly);
-    }
   }
 
   protected abstract void setHideButtons(boolean pHideButtons);

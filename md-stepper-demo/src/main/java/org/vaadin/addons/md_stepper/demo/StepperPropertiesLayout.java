@@ -1,33 +1,18 @@
 package org.vaadin.addons.md_stepper.demo;
 
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Slider;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
-
 import org.vaadin.addons.md_stepper.*;
-import org.vaadin.addons.md_stepper.demo.StepperPropertiesLayout.StepperCreateListener
-           .StepperCreateEvent;
-import org.vaadin.addons.md_stepper.event.StepSkipListener;
-import org.vaadin.addons.md_stepper.util.SerializableSupplier;
+import org.vaadin.addons.md_stepper.demo.StepperPropertiesLayout.StepperCreateListener.StepperCreateEvent;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
-public class StepperPropertiesLayout extends CustomComponent {
+public class StepperPropertiesLayout extends CustomComponent
+{
 
-  private final ComboBox themeChooserBox;
   private final ComboBox stepperTypeBox;
   private final ComboBox iconStyleBox;
   private final Slider dividerRatioSlider;
@@ -37,13 +22,13 @@ public class StepperPropertiesLayout extends CustomComponent {
   private final Label hintsLabel;
   private AbstractStepper stepper;
 
-  public StepperPropertiesLayout() {
+  public StepperPropertiesLayout()
+  {
     VerticalLayout rootLayout = new VerticalLayout();
     rootLayout.setMargin(true);
     rootLayout.setSpacing(true);
     rootLayout.setWidth(100, Unit.PERCENTAGE);
 
-    themeChooserBox = createThemeChooserBox();
     stepperTypeBox = createStepperTypeBox();
     iconStyleBox = createIconStyleBox();
     dividerRatioSlider = createDividerRatioSlider();
@@ -52,7 +37,6 @@ public class StepperPropertiesLayout extends CustomComponent {
     dividerBox = createDividerBox();
     hintsLabel = createHintsLabel();
 
-    rootLayout.addComponent(themeChooserBox);
     rootLayout.addComponent(stepperTypeBox);
     rootLayout.addComponent(iconStyleBox);
     rootLayout.addComponent(dividerRatioSlider);
@@ -65,46 +49,45 @@ public class StepperPropertiesLayout extends CustomComponent {
     setCompositionRoot(rootLayout);
   }
 
-  public void start() {
+  public void start()
+  {
     createStepper();
     fireEvent(new StepperCreateEvent(StepperPropertiesLayout.this, stepper));
   }
 
-  private void createStepper() {
+  private void createStepper()
+  {
     String stepperType = String.valueOf(stepperTypeBox.getValue());
     boolean linear = linearStepperBox.getValue();
 
+    StepIterator stepIterator = new StepIterator(Data.getSteps(), true, null);
+    LabelProvider labelProvider = new LabelProvider(stepIterator, StepLabel::new);
+
     stepper = null;
-    switch (stepperType) {
+    switch (stepperType)
+    {
       case "Horizontal":
-        stepper = new HorizontalStepper(Data.getSteps(), linear, null);
+        stepper = new HorizontalStepper(stepIterator, labelProvider);
         break;
 
       case "Vertical":
-        stepper = new VerticalStepper(Data.getSteps(), linear, null);
+        stepper = new VerticalStepper(stepIterator, labelProvider);
         break;
       case "List":
-        List<Step> stepList = Data.getSteps();
-        stepper = new ListStepper(stepList, linear, null);
+        stepper = new ListStepper(stepIterator, labelProvider);
         break;
       default:
         throw new UnsupportedOperationException("Only \"Horizontal\" or \"Vertical\" is supported");
     }
 
-    if (stepper != null) {
+    if (stepper != null)
+    {
       stepper.addStepperCompleteListener(event -> {
         Notification notification = new Notification("Success",
                                                      "Congratulations, you finished the stepper.",
                                                      Notification.Type.TRAY_NOTIFICATION);
         notification.show(Page.getCurrent());
       });
-
-      /*stepper.setCompleteErrorSupplier(() -> {
-        return stepper.getSteps().stream().collect(Collectors.toMap(
-                e -> (Step) e,
-                e -> new Exception("Test")
-        ));
-      });*/
     }
 
     updateStepperIconStyles();
@@ -114,18 +97,18 @@ public class StepperPropertiesLayout extends CustomComponent {
     dividerRatioSlider.setEnabled(stepper instanceof HorizontalStepper);
     dividerBox.setEnabled(stepper instanceof HorizontalStepper);
     stepper.start();
-
-    stepper.setReadOnly(false);
   }
 
-  private void updateStepperIconStyles() {
+  private void updateStepperIconStyles()
+  {
     Object value = iconStyleBox.getValue();
     String iconStyle = value != null ? String.valueOf(value) : "";
 
     stepper.removeStyleName(AbstractStepper.Styles.LABEL_ICONS_SQUARE);
     stepper.removeStyleName(AbstractStepper.Styles.LABEL_ICONS_CIRCULAR);
 
-    switch (iconStyle) {
+    switch (iconStyle)
+    {
       case "Square":
         stepper.addStyleName(AbstractStepper.Styles.LABEL_ICONS_SQUARE);
         break;
@@ -137,20 +120,24 @@ public class StepperPropertiesLayout extends CustomComponent {
     }
   }
 
-  private void updateStepperStyles() {
+  private void updateStepperStyles()
+  {
     String stepperType = String.valueOf(stepperTypeBox.getValue());
     boolean borderless = borderlessStepperBox.getValue();
     boolean noDivider = dividerBox.getValue();
 
-    switch (stepperType) {
+    switch (stepperType)
+    {
       case "Horizontal":
         stepper.removeStyleName(HorizontalStepper.Styles.STEPPER_BORDERLESS);
         stepper.removeStyleName(HorizontalStepper.Styles.STEPPER_NO_DIVIDER);
 
-        if (borderless) {
+        if (borderless)
+        {
           stepper.addStyleName(HorizontalStepper.Styles.STEPPER_BORDERLESS);
         }
-        if (noDivider) {
+        if (noDivider)
+        {
           stepper.addStyleName(HorizontalStepper.Styles.STEPPER_NO_DIVIDER);
         }
         break;
@@ -158,14 +145,16 @@ public class StepperPropertiesLayout extends CustomComponent {
       case "Vertical":
         stepper.removeStyleName(VerticalStepper.Styles.STEPPER_BORDERLESS);
 
-        if (borderless) {
+        if (borderless)
+        {
           stepper.addStyleName(VerticalStepper.Styles.STEPPER_BORDERLESS);
         }
         break;
       case "List":
         stepper.removeStyleName(ListStepper.Styles.STEPPER_BORDERLESS);
 
-        if (borderless) {
+        if (borderless)
+        {
           stepper.addStyleName(ListStepper.Styles.STEPPER_BORDERLESS);
         }
         break;
@@ -174,32 +163,17 @@ public class StepperPropertiesLayout extends CustomComponent {
     }
   }
 
-  private void updateDividerExpandRatio() {
-    if (stepper instanceof HorizontalStepper) {
+  private void updateDividerExpandRatio()
+  {
+    if (stepper instanceof HorizontalStepper)
+    {
       Double value = dividerRatioSlider.getValue();
       ((HorizontalStepper) stepper).setDividerExpandRatio(value.floatValue());
     }
   }
 
-  private ComboBox createThemeChooserBox() {
-    List<String> themes = Arrays.asList("Blueprint", "Dark", "Default", "Facebook", "Flat",
-                                        "Flat-Dark", "Light", "Metro");
-
-    ComboBox comboBox = new ComboBox("Choose theme", themes);
-    comboBox.setWidth(100, Unit.PERCENTAGE);
-    comboBox.setValue("Default");
-    comboBox.addValueChangeListener(e -> {
-      Object value = e.getProperty().getValue();
-      String theme = value != null ? String.valueOf(value) : "";
-      if (!"".equals(theme.trim())) {
-        getUI().setTheme(theme.toLowerCase());
-      }
-    });
-
-    return comboBox;
-  }
-
-  private ComboBox createStepperTypeBox() {
+  private ComboBox createStepperTypeBox()
+  {
     List<String> stepperTypes = Arrays.asList("Horizontal", "Vertical", "List");
 
     ComboBox comboBox = new ComboBox("Stepper Type *", stepperTypes);
@@ -213,7 +187,8 @@ public class StepperPropertiesLayout extends CustomComponent {
     return comboBox;
   }
 
-  private ComboBox createIconStyleBox() {
+  private ComboBox createIconStyleBox()
+  {
     List<String> iconStyles = Arrays.asList("Square", "Circular");
     ComboBox comboBox = new ComboBox("Choose Icon Style", iconStyles);
     comboBox.setWidth(100, Unit.PERCENTAGE);
@@ -222,7 +197,8 @@ public class StepperPropertiesLayout extends CustomComponent {
     return comboBox;
   }
 
-  private Slider createDividerRatioSlider() {
+  private Slider createDividerRatioSlider()
+  {
     Slider slider = new Slider("Divider ratio", 0, 5);
     slider.setWidth(100, Unit.PERCENTAGE);
     slider.setResolution(2);
@@ -231,7 +207,8 @@ public class StepperPropertiesLayout extends CustomComponent {
     return slider;
   }
 
-  private CheckBox createLinearStepperBox() {
+  private CheckBox createLinearStepperBox()
+  {
     CheckBox checkBox = new CheckBox("Linear Stepper *");
     checkBox.setWidth(100, Unit.PERCENTAGE);
     checkBox.setValue(true);
@@ -242,21 +219,24 @@ public class StepperPropertiesLayout extends CustomComponent {
     return checkBox;
   }
 
-  private CheckBox createBorderlessStepperBox() {
+  private CheckBox createBorderlessStepperBox()
+  {
     CheckBox checkBox = new CheckBox("Borderless");
     checkBox.setWidth(100, Unit.PERCENTAGE);
     checkBox.addValueChangeListener(event -> updateStepperStyles());
     return checkBox;
   }
 
-  private CheckBox createDividerBox() {
+  private CheckBox createDividerBox()
+  {
     CheckBox checkBox = new CheckBox("No Divider");
     checkBox.setWidth(100, Unit.PERCENTAGE);
     checkBox.addValueChangeListener(event -> updateStepperStyles());
     return checkBox;
   }
 
-  private Label createHintsLabel() {
+  private Label createHintsLabel()
+  {
     Label label
         = new Label("* Changing the stepper type or the linearity will recreate the stepper.");
     label.setWidth(100, Unit.PERCENTAGE);
@@ -265,12 +245,14 @@ public class StepperPropertiesLayout extends CustomComponent {
     return label;
   }
 
-  public void addStepperCreateListener(StepperCreateListener listener) {
+  public void addStepperCreateListener(StepperCreateListener listener)
+  {
     addListener(StepperCreateEvent.class, listener,
                 StepperCreateListener.STEPPER_CREATE_METHOD);
   }
 
-  public interface StepperCreateListener {
+  public interface StepperCreateListener
+  {
 
     Method STEPPER_CREATE_METHOD = ReflectTools.findMethod(StepperCreateListener.class,
                                                            "onStepperCreate",
@@ -278,16 +260,19 @@ public class StepperPropertiesLayout extends CustomComponent {
 
     void onStepperCreate(StepperCreateEvent event);
 
-    final class StepperCreateEvent extends Component.Event {
+    final class StepperCreateEvent extends Component.Event
+    {
 
       private final AbstractStepper stepper;
 
-      public StepperCreateEvent(Component source, AbstractStepper stepper) {
+      public StepperCreateEvent(Component source, AbstractStepper stepper)
+      {
         super(source);
         this.stepper = stepper;
       }
 
-      public AbstractStepper getStepper() {
+      public AbstractStepper getStepper()
+      {
         return stepper;
       }
     }

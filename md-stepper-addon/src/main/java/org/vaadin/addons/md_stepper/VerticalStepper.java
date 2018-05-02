@@ -25,44 +25,12 @@ public class VerticalStepper extends AbstractStepper
   private Spacer spacer;
 
   /**
-   * Create a new linear, vertical stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps The steps to show
-   */
-  public VerticalStepper(List<Step> steps)
-  {
-    this(steps, true, null);
-  }
-
-  /**
-   * Create a new vertical stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps  The steps to show
-   * @param linear <code>true</code> if the state rule should be linear, <code>false</code> else
-   */
-  public VerticalStepper(List<Step> steps, boolean linear, Step startAt)
-  {
-    this(new StepIterator(steps, linear, startAt), StepLabel::new);
-  }
-
-  /**
-   * Create a new vertical stepper fusing the given iterator.
-   *
-   * @param stepIterator The iterator that handles the iteration over the given steps
-   * @param labelFactory The label factory to build step labels
-   */
-  private VerticalStepper(StepIterator stepIterator, SerializableSupplier<StepLabel> labelFactory)
-  {
-    this(stepIterator, new LabelProvider(stepIterator, labelFactory));
-  }
-
-  /**
    * Create a new vertical stepper using the given iterator and label change handler.
    *
    * @param stepIterator  The iterator that handles the iteration over the given steps
    * @param labelProvider The handler that handles changes to labels
    */
-  private VerticalStepper(StepIterator stepIterator, LabelProvider labelProvider)
+  public VerticalStepper(StepIterator stepIterator, LabelProvider labelProvider)
   {
     super(stepIterator, labelProvider);
 
@@ -96,30 +64,6 @@ public class VerticalStepper extends AbstractStepper
     }
 
     spacer = Spacer.addToLayout(rootLayout);
-  }
-
-  /**
-   * Create a new linear, vertical stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps        The steps to show
-   * @param labelFactory The factory used to create new labels for the steps
-   */
-  public VerticalStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory)
-  {
-    this(steps, true, labelFactory, null);
-  }
-
-  /**
-   * Create a new vertical stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps        The steps to show
-   * @param linear       <code>true</code> if the state rule should be linear, <code>false</code> else
-   * @param labelFactory The factory used to create new labels for the steps
-   */
-  public VerticalStepper(List<Step> steps, boolean linear,
-                         SerializableSupplier<StepLabel> labelFactory, Step startAt)
-  {
-    this(new StepIterator(steps, linear, startAt), labelFactory);
   }
 
   @Override

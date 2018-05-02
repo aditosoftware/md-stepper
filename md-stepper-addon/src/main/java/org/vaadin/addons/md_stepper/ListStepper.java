@@ -24,67 +24,13 @@ public class ListStepper extends AbstractStepper
   private Panel stepsContentPanel;
 
   /**
-   * Create a new linear, vertical stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps The steps to show
-   */
-  public ListStepper(List<Step> steps)
-  {
-    this(steps, true, null);
-  }
-
-  /**
-   * Create a new vertical stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps  The steps to show
-   * @param linear <code>true</code> if the state rule should be linear, <code>false</code> else
-   */
-  public ListStepper(List<Step> steps, boolean linear, Step startAt)
-  {
-    this(new StepIterator(steps, linear, startAt), StepLabel::new);
-  }
-
-  /**
-   * Create a new linear, vertical stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps        The steps to show
-   * @param labelFactory The factory used to create new labels for the steps
-   */
-  public ListStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory)
-  {
-    this(steps, true, labelFactory, null);
-  }
-
-  /**
-   * Create a new vertical stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps        The steps to show
-   * @param linear       <code>true</code> if the state rule should be linear, <code>false</code> else
-   * @param labelFactory The factory used to create new labels for the steps
-   */
-  public ListStepper(List<Step> steps, boolean linear, SerializableSupplier<StepLabel> labelFactory, Step startAt)
-  {
-    this(new StepIterator(steps, linear, startAt), labelFactory);
-  }
-
-  /**
-   * Create a new vertical stepper fusing the given iterator.
-   *
-   * @param stepIterator The iterator that handles the iteration over the given steps
-   * @param labelFactory The label factory to build step labels
-   */
-  private ListStepper(StepIterator stepIterator, SerializableSupplier<StepLabel> labelFactory)
-  {
-    this(stepIterator, new LabelProvider(stepIterator, labelFactory));
-  }
-
-  /**
    * Create a new vertical stepper using the given iterator and label change handler.
    *
    * @param stepIterator  The iterator that handles the iteration over the given steps
    * @param labelProvider The handler that handles changes to labels
    */
-  private ListStepper(StepIterator stepIterator, LabelProvider labelProvider)
+
+  public ListStepper(StepIterator stepIterator, LabelProvider labelProvider)
   {
     super(stepIterator, labelProvider);
 

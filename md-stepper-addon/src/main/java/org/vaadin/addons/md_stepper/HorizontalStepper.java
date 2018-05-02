@@ -31,49 +31,7 @@ public class HorizontalStepper extends AbstractStepper
 
   private float dividerExpandRatio;
 
-  /**
-   * Create a new horizontal stepper.
-   * <p>
-   * <b>ATTENTION:</b><br>
-   * This constructor is used for the declarative layout!
-   */
-  public HorizontalStepper()
-  {
-    this(new ArrayList<>());
-  }
 
-  /**
-   * Create a new linear, horizontal stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps The steps to show
-   */
-  public HorizontalStepper(List<Step> steps)
-  {
-    this(steps, true, null);
-  }
-
-  /**
-   * Create a new horizontal stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps  The steps to show
-   * @param linear <code>true</code> if the state rule should be linear, <code>false</code> else
-   */
-  public HorizontalStepper(List<Step> steps, boolean linear, Step startAt)
-  {
-    this(new StepIterator(steps, linear, startAt), StepLabel::new);
-  }
-
-  /**
-   * Create a new horizontal stepper using the given iterator.
-   *
-   * @param stepIterator The iterator that handles the iteration over the given steps
-   * @param labelFactory The label factory used to create step labels
-   */
-  private HorizontalStepper(StepIterator stepIterator,
-                            SerializableSupplier<StepLabel> labelFactory)
-  {
-    this(stepIterator, new LabelProvider(stepIterator, labelFactory));
-  }
 
   /**
    * Create a new horizontal stepper using the given iterator and label change handler.
@@ -81,7 +39,7 @@ public class HorizontalStepper extends AbstractStepper
    * @param stepIterator  The iterator that handles the iteration over the given steps
    * @param labelProvider The handler that handles changes to labels
    */
-  private HorizontalStepper(StepIterator stepIterator, LabelProvider labelProvider)
+  public HorizontalStepper(StepIterator stepIterator, LabelProvider labelProvider)
   {
     super(stepIterator, labelProvider);
 
@@ -176,30 +134,6 @@ public class HorizontalStepper extends AbstractStepper
   {
     this.dividerExpandRatio = dividerExpandRatio;
     refreshLabelBar();
-  }
-
-  /**
-   * Create a new linear, horizontal stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps        The steps to show
-   * @param labelFactory The factory used to create new labels for the steps
-   */
-  public HorizontalStepper(List<Step> steps, SerializableSupplier<StepLabel> labelFactory)
-  {
-    this(steps, true, labelFactory, null);
-  }
-
-  /**
-   * Create a new horizontal stepper for the given steps using a {@link StepIterator}.
-   *
-   * @param steps        The steps to show
-   * @param linear       <code>true</code> if the state rule should be linear, <code>false</code> else
-   * @param labelFactory The factory used to create new labels for the steps
-   */
-  public HorizontalStepper(List<Step> steps, boolean linear,
-                           SerializableSupplier<StepLabel> labelFactory, Step startAt)
-  {
-    this(new StepIterator(steps, linear, startAt), labelFactory);
   }
 
   @Override
