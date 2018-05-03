@@ -40,6 +40,7 @@ public abstract class AbstractStepper extends CustomComponent
 
   private boolean stepperLocked = false;
   private Map<Step, Boolean> preLockState;
+  private boolean readOnly = false;
 
   /**
    * Construct a new instance of the stepper.
@@ -426,6 +427,7 @@ public abstract class AbstractStepper extends CustomComponent
     }
   }
 
+  @Override
   public void lockStepper()
   {
     if (stepperLocked) return;
@@ -449,6 +451,7 @@ public abstract class AbstractStepper extends CustomComponent
     refresh();
   }
 
+  @Override
   public void unlockStepper()
   {
     if (!stepperLocked) return;
@@ -468,7 +471,27 @@ public abstract class AbstractStepper extends CustomComponent
     refresh();
   }
 
+  @Override
+  public boolean isStepperLocked()
+  {
+    return stepperLocked;
+  }
+
   protected abstract void setHideButtons(boolean pHideButtons);
+
+  @Override
+  public void setReadOnly(boolean readOnly)
+  {
+    this.readOnly = readOnly;
+    this.setHideButtons(readOnly);
+    this.getStepIterator().setReadOnly(readOnly);
+  }
+
+  @Override
+  public boolean isReadOnly()
+  {
+    return readOnly;
+  }
 
   /**
    * Styles for the stepper.

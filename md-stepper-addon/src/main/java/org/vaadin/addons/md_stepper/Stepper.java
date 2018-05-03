@@ -141,4 +141,11 @@ public interface Stepper
    * Unlocks the stepper.
    */
   void unlockStepper();
+
+  /**
+   * Checks if the stepper is locked.
+   *
+   * @return {@code true} if the stepper is locked, {@code false} otherweise
+   */
+  boolean isStepperLocked ();
 }

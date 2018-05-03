@@ -238,18 +238,7 @@ public class StepLabel extends CustomComponent
   private void setupIcon()
   {
     iconLabel.setValue(icon != null ? icon.getHtml() : null);
-    if (nexted)
-    {
-      iconLabel.setValue(getIconNexted().getHtml());
-    }
-    if (skipped)
-    {
-      iconLabel.setValue(getIconSkipped().getHtml());
-    }
-    if (editable)
-    {
-      iconLabel.setValue(getIconEditable().getHtml());
-    }
+
     if (disabled)
     {
       iconLabel.setValue(getIconDisabled().getHtml());

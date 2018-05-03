@@ -15,6 +15,8 @@ import org.vaadin.addons.md_stepper.util.StringUtils;
 public class Step4 extends Step {
 
   public Step4() {
+    super(true);
+
     VerticalLayout content = new VerticalLayout();
     content.setWidth(100, Sizeable.Unit.PERCENTAGE);
     content.setSpacing(true);
@@ -32,7 +34,7 @@ public class Step4 extends Step {
     content.addComponent(errorLabel);
     content.addComponent(textField);
 
-    addStepBackListener(StepperActions::back);
+    /*addStepBackListener(StepperActions::back);
     addStepNextListener(event -> {
       Stepper stepper = event.getSource();
       stepper.hideError();
@@ -43,7 +45,7 @@ public class Step4 extends Step {
       } else {
         stepper.next();
       }
-    });
+    });*/
 
     setCaption("Step 4");
     setDescription("Step Validation");

@@ -97,6 +97,8 @@ public class StepperPropertiesLayout extends CustomComponent
     dividerRatioSlider.setEnabled(stepper instanceof HorizontalStepper);
     dividerBox.setEnabled(stepper instanceof HorizontalStepper);
     stepper.start();
+
+    stepper.setReadOnly(false);
   }
 
   private void updateStepperIconStyles()

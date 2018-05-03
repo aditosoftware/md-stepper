@@ -32,7 +32,8 @@ public class Step3 extends Step {
     content.addComponent(stepFeedbackLabel);
 
     addStepBackListener(StepperActions::back);
-    addStepNextListener(event -> {
+    addStepNextListener(StepperActions::next);
+    /*addStepNextListener(event -> {
       Stepper stepper = event.getSource();
       stepper.showFeedbackMessage("Long loading operation is being performed");
 
@@ -46,7 +47,7 @@ public class Step3 extends Step {
           });
         }
       }, 2000);
-    });
+    });*/
 
     setCaption("Step 3");
     setDescription("Long running Operations");

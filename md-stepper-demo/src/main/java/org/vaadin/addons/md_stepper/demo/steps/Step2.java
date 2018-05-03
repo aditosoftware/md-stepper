@@ -41,18 +41,16 @@ public class Step2 extends Step {
     content.addComponent(textField);
     content.iterator().forEachRemaining(c -> c.setWidth(100, Unit.PERCENTAGE));
 
-    addStepCompleteListener(event -> {
+    /*addStepCompleteListener(event -> {
       event.getSource().getSteps().get(2).setDisabled(textField.getValue().equals(""));
       event.getSource().refresh();
-    });
+    });*/
 
 
 
     setCaption("Step 2");
     setDescription("Step Attributes");
     setContent(content);
-    setIcon(FontAwesome.BAR_CHART);
-    setOptional(true);
     setEditable(true);
   }
 }

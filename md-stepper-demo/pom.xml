@@ -51,7 +51,7 @@
     <dependency>
       <groupId>de.adito.aditoweb.vaadin.addons</groupId>
       <artifactId>stepper</artifactId>
-      <version>5.0.15-SNAPSHOT</version>
+      <version>5.0.18-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.vaadin</groupId>
