@@ -132,13 +132,13 @@ public interface Stepper
   String getFeedbackMessage();
 
   /**
-   * Locks the entire stepper.
+   * Locks the entire stepper to the current step.
    */
   void lockStepper();
 
 
   /**
-   * Unlocks the stepper.
+   * Unlocks the stepper from the current step.
    */
   void unlockStepper();
 
@@ -147,5 +147,19 @@ public interface Stepper
    *
    * @return {@code true} if the stepper is locked, {@code false} otherweise
    */
-  boolean isStepperLocked ();
+  boolean isStepperLocked();
+
+  /**
+   * Sets the stepper into a readonly mode.
+   *
+   * @param readOnly {@code true} enables the readOnly mode; {@code false} disables the readOnly mode
+   */
+  void setReadOnly(boolean readOnly);
+
+  /**
+   * Returns if the stepper is in readOnly mode
+   *
+   * @return {@code true} if the stepper is readOnly, otherwise {@code false}
+   */
+  boolean isReadOnly();
 }
