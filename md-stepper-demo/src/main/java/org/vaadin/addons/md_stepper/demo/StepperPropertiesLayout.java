@@ -61,7 +61,7 @@ public class StepperPropertiesLayout extends CustomComponent
     boolean linear = linearStepperBox.getValue();
 
     StepIterator stepIterator = new StepIterator(Data.getSteps(), true, null);
-    LabelProvider labelProvider = new LabelProvider(stepIterator, StepLabel::new);
+    LabelProvider labelProvider = new LabelProvider(stepIterator, () -> new StepLabel(ELabelIconStrategy.DEFAULT));
 
     stepper = null;
     switch (stepperType)
@@ -97,8 +97,6 @@ public class StepperPropertiesLayout extends CustomComponent
     dividerRatioSlider.setEnabled(stepper instanceof HorizontalStepper);
     dividerBox.setEnabled(stepper instanceof HorizontalStepper);
     stepper.start();
-
-    stepper.setReadOnly(false);
   }
 
   private void updateStepperIconStyles()

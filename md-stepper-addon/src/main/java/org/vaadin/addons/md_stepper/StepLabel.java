@@ -31,6 +31,8 @@ public class StepLabel extends CustomComponent
   public static final FontIcon DEFAULT_ICON_ERROR = FontAwesome.WARNING;
   public static final FontIcon DEFAULT_ICON_DISABLED = FontAwesome.CLOSE;
 
+  private final ELabelIconStrategy labelIconStrategy;
+
   private static final String STYLE_ROOT_LAYOUT = "step-label";
   private static final String STYLE_STEP_ICON = "step-icon";
   private static final String STYLE_STEP_CAPTION = "step-caption";
@@ -61,11 +63,20 @@ public class StepLabel extends CustomComponent
   private Throwable error;
 
   /**
+   * Construct a new label with the given LabelIconStrategy.
+   *
+   * @param pLabelIconStrategy
+   */
+  public StepLabel (ELabelIconStrategy pLabelIconStrategy) {
+    this(null, null, null, pLabelIconStrategy);
+  }
+
+  /**
    * Construct a new label.
    */
   public StepLabel()
   {
-    this(null, null, null);
+    this(null, null, null, ELabelIconStrategy.DEFAULT);
   }
 
 
@@ -76,7 +87,7 @@ public class StepLabel extends CustomComponent
    * @param description The description to show
    * @param icon        The icon to show
    */
-  public StepLabel(String caption, String description, FontIcon icon)
+  public StepLabel(String caption, String description, FontIcon icon, ELabelIconStrategy pLabelIconStrategy)
   {
     active = false;
     nexted = false;
@@ -84,6 +95,8 @@ public class StepLabel extends CustomComponent
     editable = false;
     clickable = false;
     disabled = false;
+
+    labelIconStrategy = pLabelIconStrategy;
 
     iconLabel = new Label();
     iconLabel.setWidthUndefined();
@@ -137,7 +150,7 @@ public class StepLabel extends CustomComponent
    */
   public StepLabel(String caption)
   {
-    this(caption, null, null);
+    this(caption, null, null, null);
   }
 
   /**
@@ -148,7 +161,7 @@ public class StepLabel extends CustomComponent
    */
   public StepLabel(String caption, String description)
   {
-    this(caption, description, null);
+    this(caption, description, null, null);
   }
 
   @Override
@@ -238,7 +251,15 @@ public class StepLabel extends CustomComponent
   private void setupIcon()
   {
     iconLabel.setValue(icon != null ? icon.getHtml() : null);
-
+    if (labelIconStrategy.isAllowNexted() && nexted) {
+      iconLabel.setValue(getIconNexted().getHtml());
+    }
+    if (labelIconStrategy.isAllowSkipped() && skipped) {
+      iconLabel.setValue(getIconSkipped().getHtml());
+    }
+    if (labelIconStrategy.isAllowEditable() && editable) {
+      iconLabel.setValue(getIconEditable().getHtml());
+    }
     if (disabled)
     {
       iconLabel.setValue(getIconDisabled().getHtml());
