@@ -60,6 +60,7 @@ public class StepLabel extends CustomComponent
   private boolean editable;
   private boolean clickable;
   private boolean disabled;
+  private boolean locked;
   private Throwable error;
 
   /**
@@ -95,6 +96,7 @@ public class StepLabel extends CustomComponent
     editable = false;
     clickable = false;
     disabled = false;
+    locked = false;
 
     labelIconStrategy = pLabelIconStrategy;
 
@@ -303,6 +305,7 @@ public class StepLabel extends CustomComponent
     toggleStyleName(this, Styles.EDITABLE, editable);
     toggleStyleName(this, Styles.CLICKABLE, clickable);
     toggleStyleName(this, Styles.DISABLED, disabled);
+    toggleStyleName(this, Styles.LOCKED, locked);
     toggleStyleName(this, Styles.ERROR, error != null);
   }
 
@@ -578,6 +581,15 @@ public class StepLabel extends CustomComponent
     markAsDirty();
   }
 
+  public void setLocked (boolean pLocked) {
+    this.locked = pLocked;
+    this.clickable = !pLocked;
+  }
+
+  public boolean isLocked () {
+    return this.locked;
+  }
+
   /**
    * The styles for a {@link StepLabel}.
    */
@@ -590,6 +602,7 @@ public class StepLabel extends CustomComponent
     private static final String EDITABLE = "editable";
     private static final String CLICKABLE = "clickable";
     private static final String DISABLED = "disabled";
+    private static final String LOCKED = "locked";
     private static final String ERROR = "error";
 
     private Styles()

@@ -112,6 +112,14 @@
       }
     }
 
+    &.locked {
+      opacity: 0.3;
+      &:hover {
+        cursor: auto;
+        background-color: transparent;
+      }
+    }
+
     &.disabled {
         .step-caption,
         .step-description {

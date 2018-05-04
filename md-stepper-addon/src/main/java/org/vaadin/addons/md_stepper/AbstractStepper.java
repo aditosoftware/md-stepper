@@ -428,53 +428,17 @@ public abstract class AbstractStepper extends CustomComponent
   }
 
   @Override
-  public void lockStepper()
+  public void setLocked(boolean pLocked)
   {
-    if (stepperLocked) return;
-    stepperLocked = true;
-
-    // Disable all steps except the current one
-    preLockState = new HashMap<>();
-    getSteps().stream()
-        .filter(e -> !e.equals(getCurrent()))
-        .forEach(e -> {
-          preLockState.put(e, e.isDisabled());
-          e.setDisabled(true);
-        });
-
-    // Disable the buttons of the current step
-    getCurrent().getNextButton().setEnabled(false);
-    getCurrent().getBackButton().setEnabled(false);
-    getCurrent().getCancelButton().setEnabled(false);
-    getCurrent().getSkipButton().setEnabled(false);
-
+    getStepIterator().setLocked(pLocked);
+    setHideButtons(pLocked);
     refresh();
   }
 
   @Override
-  public void unlockStepper()
+  public boolean isLocked()
   {
-    if (!stepperLocked) return;
-    stepperLocked = false;
-
-    getSteps().stream()
-        .filter(e -> !e.equals(getCurrent()))
-        .forEach(e -> e.setDisabled(preLockState.get(e)));
-    preLockState = null;
-
-    // Disable the buttons of the current step
-    getCurrent().getNextButton().setEnabled(true);
-    getCurrent().getBackButton().setEnabled(true);
-    getCurrent().getCancelButton().setEnabled(true);
-    getCurrent().getSkipButton().setEnabled(true);
-
-    refresh();
-  }
-
-  @Override
-  public boolean isStepperLocked()
-  {
-    return stepperLocked;
+    return getStepIterator().isLocked();
   }
 
   protected abstract void setHideButtons(boolean pHideButtons);

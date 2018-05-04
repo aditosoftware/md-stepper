@@ -1,5 +1,6 @@
 package org.vaadin.addons.md_stepper;
 
+import com.sun.corba.se.impl.ior.iiop.IIOPProfileTemplateImpl;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.MouseEventDetails;
 import org.vaadin.addons.md_stepper.collection.*;
@@ -93,6 +94,7 @@ public class LabelProvider
     stepLabel.setCaption(step.getCaption());
     stepLabel.setDescription(step.getDescription());
     stepLabel.setDisabled(step.isDisabled());
+    stepLabel.setLocked(stepIterator.isLocked());
     stepLabel.addLayoutClickListener(event -> {
       boolean isLeftClick = event.getButton() == MouseEventDetails.MouseButton.LEFT;
       if (isLeftClick && stepLabel.isClickable())
@@ -213,6 +215,7 @@ public class LabelProvider
       stepLabel.setCaption(step.getCaption());
       stepLabel.setDescription(step.getDescription());
       stepLabel.setDisabled(step.isDisabled());
+      stepLabel.setLocked(stepIterator.isLocked());
     });
   }
 

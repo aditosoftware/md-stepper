@@ -27,6 +27,7 @@ public class StepIterator extends AbstractObservableIterator<Step> implements Co
   private Step current;
   private Step startAt;
   private boolean readOnly = false;
+  private boolean locked = false;
 
   /**
    * Create a new, non-linear iterator with an empty step list.
@@ -420,5 +421,13 @@ public class StepIterator extends AbstractObservableIterator<Step> implements Co
   public void setReadOnly(boolean pReadOnly)
   {
     readOnly = pReadOnly;
+  }
+
+  public void setLocked (boolean pLocked) {
+    locked = pLocked;
+  }
+
+  public boolean isLocked () {
+    return locked;
   }
 }
