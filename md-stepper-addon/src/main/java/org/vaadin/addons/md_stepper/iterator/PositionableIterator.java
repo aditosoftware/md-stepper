@@ -17,6 +17,8 @@ public interface PositionableIterator<E> extends ListIterator<E>
    */
   void moveTo(E element);
 
+  void moveTo(E element, boolean readOnlyOverride);
+
   /**
    * Check if a move to the given element is possible.
    *

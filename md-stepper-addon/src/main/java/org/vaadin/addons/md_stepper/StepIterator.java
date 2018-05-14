@@ -217,13 +217,17 @@ public class StepIterator extends AbstractObservableIterator<Step> implements Co
   @Override
   public void moveTo(Step element)
   {
+    moveTo(element, false);
+  }
 
+  @Override
+  public void moveTo(Step element, boolean readOnlyOverride) {
     if (!hasMoveTo(element))
     {
       throw new NoSuchElementException();
     }
 
-    if (readOnly && element != null)
+    if ((readOnly && readOnlyOverride) && element != null)
       return;
 
     Step tmp = current;
