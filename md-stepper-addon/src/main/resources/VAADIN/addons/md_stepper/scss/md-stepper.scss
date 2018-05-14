@@ -25,41 +25,41 @@
     border-radius: $border-radius;
 
     > .v-horizontallayout {
-        padding: $v-layout-margin-top * 0.35 $v-layout-margin-right * 0.35 $v-layout-margin-bottom * 0.35 $v-layout-margin-left * 0.35;
+      padding: $v-layout-margin-top * 0.35 $v-layout-margin-right * 0.35 $v-layout-margin-bottom * 0.35 $v-layout-margin-left * 0.35;
 
-        .step-icon {
-            width: $icon-size;
-            height: $icon-size;
-            margin-right: $v-layout-margin-right * 0.35;
-            text-align: center;
+      .step-icon {
+        width: $icon-size;
+        height: $icon-size;
+        margin-right: $v-layout-margin-right * 0.35;
+        text-align: center;
 
-            @if ($icon-size % 2) != 0px {
-                text-indent: 0.5px;
-            }
-
-            background: valo-font-color($background-color, .5);
-            color: valo-font-color(valo-font-color($background-color, .5), 0.9);
-
-            border-radius: 50%;
-
-            &:before {
-            content: "";
-            display: inline-block;
-            height: 100%;
-            vertical-align: middle;
-            width: 0;
-            }
-
-            .v-icon {
-                line-height: $icon-size;
-            }
+        @if ($icon-size % 2) != 0px {
+          text-indent: 0.5px;
         }
 
-        .step-caption, .step-description {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
+        background: valo-font-color($background-color, .5);
+        color: valo-font-color(valo-font-color($background-color, .5), 0.9);
+
+        border-radius: 50%;
+
+        &:before {
+          content: "";
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+          width: 0;
         }
+
+        .v-icon {
+          line-height: $icon-size;
+        }
+      }
+
+      .step-caption, .step-description {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
 
     :not(.single-label).step-caption {
@@ -121,15 +121,15 @@
     }
 
     &.disabled {
-        .step-caption,
-        .step-description {
-            color: rgba(valo-font-color($v-background-color), .4);
-        }
+      .step-caption,
+      .step-description {
+        color: rgba(valo-font-color($v-background-color), .4);
+      }
 
-        .step-icon {
-            background: rgba(valo-font-color($background-color), .4);
-            color: valo-font-color(valo-font-color($background-color, .5), 0.9);
-        }
+      .step-icon {
+        background: rgba(valo-font-color($background-color), .4);
+        color: valo-font-color(valo-font-color($background-color, .5), 0.9);
+      }
     }
   }
 
@@ -171,7 +171,7 @@
 
   .stepper-horizontal.label-icons-circular .label-bar,
   .stepper-vertical.label-icons-circular .stepper-vertical-row,
-   .stepper-list.label-icons-circular .stepper-list-stepsbar {
+  .stepper-list.label-icons-circular .stepper-list-stepsbar {
     .step-label .step-icon {
       border-radius: 50%;
     }
@@ -242,42 +242,46 @@
   /*------------ LIST STEPPER ------------*/
   .stepper-list {
     .stepper-list-stepsbar {
-        height: 100%;
-        @include valo-panel-caption-style($background-color: $background-color, $bevel: $bevel, $gradient: valo-gradient-style($v-gradient) valo-gradient-opacity($v-gradient)/4, $border: $border);
-        border-bottom: none;
-        border-top-left-radius: $v-border-radius;
-        border-bottom-left-radius: $v-border-radius;
-        line-height: inherit;
-        font-size: inherit;
-        font-weight: inherit;
-        padding: 0;
-        overflow: overlay;
+      height: 100%;
+      @include valo-panel-caption-style($background-color: $background-color, $bevel: $bevel, $gradient: valo-gradient-style($v-gradient) valo-gradient-opacity($v-gradient)/4, $border: $border);
+      border-bottom: none;
+      border-top-left-radius: $v-border-radius;
+      border-bottom-left-radius: $v-border-radius;
+      line-height: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      padding: 0;
+      overflow: overlay;
 
-        .step-label {
-            border-radius: 0;
+      .step-label {
+        border-radius: 0;
 
-            &.active {
-                background-color: #0072C6;
+        &.active {
+          background-color: #0072C6;
 
-                .step-caption {
-                    color: white;
-                }
-                .step-description {
-                    color: white;
-                }
+          .step-caption {
+            color: white;
+          }
+          .step-description {
+            color: white;
+          }
 
-                .step-icon {
-                    background-color: white;
+          .step-icon {
+            background-color: white;
 
-                    > .v-icon {
-                        color: #0072C6;
-                    }
-                }
+            > .v-icon {
+              color: #0072C6;
             }
+          }
         }
+      }
     }
     .step-button-container {
-        padding: round($v-layout-margin-top / 3) round($v-layout-margin-right / 3) round($v-layout-margin-bottom / 3) round($v-layout-margin-left / 3);
-     }
+      padding: round($v-layout-margin-top / 3) round($v-layout-margin-right / 3) round($v-layout-margin-bottom / 3) round($v-layout-margin-left / 3);
+
+      > *:not(:last-child) {
+        margin-right: round($v-layout-margin-right / 3);
+      }
+    }
   }
 }
